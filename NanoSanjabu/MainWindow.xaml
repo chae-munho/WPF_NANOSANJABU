@@ -137,9 +137,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- ============================================ -->
-        <!-- CUSTOM TITLE BAR                             -->
-        <!-- ============================================ -->
+       
+        <!-- CUSTOM TITLE BAR   -->
+      
         <Grid Grid.Row="0" Background="#0D1117" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -270,7 +270,7 @@
                 </DockPanel>
             </Border>
 
-          
+            <!---Main-->
             <!-- MAIN CONTENT AREA -->
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
@@ -290,12 +290,12 @@
                         <!-- Search Box -->
                         <!-- Search Box -->
                         <Border DockPanel.Dock="Left"
-        Background="#161B22"
-        BorderBrush="#30363D"
-        BorderThickness="1"
-        CornerRadius="6"
-        Width="322"
-        Height="40">
+                            Background="#161B22"
+                            BorderBrush="#30363D"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Width="322"
+                            Height="40">
 
                             <Grid Margin="10,0">
                                 <Grid.ColumnDefinitions>
@@ -305,12 +305,12 @@
 
                                 <!-- 돋보기 아이콘 -->
                                 <TextBlock Grid.Column="0"
-                   Text="&#xE721;"
-                   FontFamily="Segoe MDL2 Assets"
-                   FontSize="14"
-                   Foreground="#FFF"
-                   VerticalAlignment="Center"
-                   Margin="0,0,8,0"/>
+                                   Text="&#xE721;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="14"
+                                   Foreground="#FFF"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0"/>
 
                                 <!-- 실제 입력 -->
                                 <TextBox Grid.Column="1"
@@ -350,6 +350,8 @@
                     </DockPanel>
                 </Border>
 
+                
+                <!--Main 영역 최상단-->
                 <Grid Grid.Row="1" Margin="24,24,24,32">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -673,7 +675,10 @@
                         </Grid>
                     </Border>
                 </Grid>
-
+                <!---Main-->
+                
+                
+                
             </Grid>
         </Grid>
     </Grid>
