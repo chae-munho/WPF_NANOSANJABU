@@ -216,19 +216,15 @@
 
                     <!-- Navigation -->
                     <StackPanel Margin="8,0">
+
                         <!-- Dashboard (Active) -->
                         <Button Style="{StaticResource NavItemActive}" Margin="0,2">
                             <StackPanel Orientation="Horizontal">
-                                <Grid Width="18" Height="18" Margin="0,0,10,0">
-                                    <Rectangle Width="7" Height="7" Fill="#8B949E" RadiusX="1" RadiusY="1"
-                                           HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                                    <Rectangle Width="7" Height="7" Fill="#8B949E" RadiusX="1" RadiusY="1"
-                                           HorizontalAlignment="Right" VerticalAlignment="Top"/>
-                                    <Rectangle Width="7" Height="7" Fill="#8B949E" RadiusX="1" RadiusY="1"
-                                           HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                                    <Rectangle Width="7" Height="7" Fill="#8B949E" RadiusX="1" RadiusY="1"
-                                           HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-                                </Grid>
+                                <Image Source="/images/dashboard.png"
+                                   Width="16" Height="16"
+                                   Margin="0,0,10,0"
+                                   VerticalAlignment="Center"
+                                   Stretch="Uniform"/>
                                 <TextBlock Text="대시보드" VerticalAlignment="Center" Foreground="#E6EDF3"/>
                             </StackPanel>
                         </Button>
@@ -236,8 +232,11 @@
                         <!-- 투입부 -->
                         <Button Style="{StaticResource NavItem}" Margin="0,2">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                       Foreground="#8B949E" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Image Source="/images/inputPart.png"
+                                   Width="16" Height="16"
+                                   Margin="0,0,10,0"
+                                   VerticalAlignment="Center"
+                                   Stretch="Uniform"/>
                                 <TextBlock Text="투입부" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -245,8 +244,11 @@
                         <!-- 적용부 -->
                         <Button Style="{StaticResource NavItem}" Margin="0,2">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE734;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                       Foreground="#8B949E" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Image Source="/images/laminatedsection.png"
+                                   Width="16" Height="16"
+                                   Margin="0,0,10,0"
+                                   VerticalAlignment="Center"
+                                   Stretch="Uniform"/>
                                 <TextBlock Text="적용부" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -254,18 +256,22 @@
                         <!-- 히스토리 -->
                         <Button Style="{StaticResource NavItem}" Margin="0,2">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE81C;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                       Foreground="#8B949E" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Image Source="/images/history.png"
+                                   Width="16" Height="16"
+                                   Margin="0,0,10,0"
+                                   VerticalAlignment="Center"
+                                   Stretch="Uniform"/>
                                 <TextBlock Text="히스토리" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
+
                     </StackPanel>
+
                 </DockPanel>
             </Border>
 
-            <!-- ============================================ -->
-            <!-- MAIN CONTENT AREA                            -->
-            <!-- ============================================ -->
+          
+            <!-- MAIN CONTENT AREA -->
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="56"/>
@@ -497,7 +503,7 @@
                             Style="{StaticResource KpiCard}"
                             Background="#1E1528"
                             Width="408" Height="200"
-                            Margin="0">
+                            Margin="0, 0, 10, 0">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
