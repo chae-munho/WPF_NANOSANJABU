@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\ean\\\uC0B0\uC790\uBD80\\NanoSanjabu\\",
+  "WorkspaceRootPath": "C:\\ean\\\uC0B0\uC790\uBD80\\WPF_NANOSANJABU\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2F7297CD-540D-6581-C502-2691D15F7421}|NanoSanjabu\\NanoSanjabu.csproj|c:\\ean\\\uC0B0\uC790\uBD80\\nanosanjabu\\nanosanjabu\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{2F7297CD-540D-6581-C502-2691D15F7421}|NanoSanjabu\\NanoSanjabu.csproj|c:\\ean\\\uC0B0\uC790\uBD80\\wpf_nanosanjabu\\nanosanjabu\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{2F7297CD-540D-6581-C502-2691D15F7421}|NanoSanjabu\\NanoSanjabu.csproj|solutionrelative:nanosanjabu\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2F7297CD-540D-6581-C502-2691D15F7421}|NanoSanjabu\\NanoSanjabu.csproj|c:\\ean\\\uC0B0\uC790\uBD80\\nanosanjabu\\nanosanjabu\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{2F7297CD-540D-6581-C502-2691D15F7421}|NanoSanjabu\\NanoSanjabu.csproj|c:\\ean\\\uC0B0\uC790\uBD80\\wpf_nanosanjabu\\nanosanjabu\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2F7297CD-540D-6581-C502-2691D15F7421}|NanoSanjabu\\NanoSanjabu.csproj|solutionrelative:nanosanjabu\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -24,9 +24,9 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\ean\\\uC0B0\uC790\uBD80\\NanoSanjabu\\NanoSanjabu\\MainWindow.xaml",
+              "DocumentMoniker": "C:\\ean\\\uC0B0\uC790\uBD80\\WPF_NANOSANJABU\\NanoSanjabu\\MainWindow.xaml",
               "RelativeDocumentMoniker": "NanoSanjabu\\MainWindow.xaml",
-              "ToolTip": "C:\\ean\\\uC0B0\uC790\uBD80\\NanoSanjabu\\NanoSanjabu\\MainWindow.xaml",
+              "ToolTip": "C:\\ean\\\uC0B0\uC790\uBD80\\WPF_NANOSANJABU\\NanoSanjabu\\MainWindow.xaml",
               "RelativeToolTip": "NanoSanjabu\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2026-02-13T00:12:55.334Z",
@@ -36,9 +36,9 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\ean\\\uC0B0\uC790\uBD80\\NanoSanjabu\\NanoSanjabu\\MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\ean\\\uC0B0\uC790\uBD80\\WPF_NANOSANJABU\\NanoSanjabu\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "NanoSanjabu\\MainWindow.xaml.cs",
-              "ToolTip": "C:\\ean\\\uC0B0\uC790\uBD80\\NanoSanjabu\\NanoSanjabu\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\ean\\\uC0B0\uC790\uBD80\\WPF_NANOSANJABU\\NanoSanjabu\\MainWindow.xaml.cs",
               "RelativeToolTip": "NanoSanjabu\\MainWindow.xaml.cs",
               "ViewState": "AgIAABcAAAAAAAAAAADwvyUAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
