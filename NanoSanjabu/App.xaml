@@ -4,6 +4,24 @@
              xmlns:local="clr-namespace:NanoSanjabu"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!-- Base Text Style -->
+        <Style x:Key="BaseText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#C9D1D9"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Malgun Gothic"/>
+        </Style>
+
+        <!-- KPI Card Base Style -->
+        <Style x:Key="KpiCard" TargetType="Border">
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20,16"/>
+        </Style>
+
+        <!-- Report Row Style -->
+        <Style x:Key="ReportText" TargetType="TextBlock" BasedOn="{StaticResource BaseText}">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Foreground" Value="#C9D1D9"/>
+        </Style>
+
     </Application.Resources>
 </Application>

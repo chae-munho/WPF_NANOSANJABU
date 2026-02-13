@@ -38,3 +38,13 @@ C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\refint\Na
 C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\NanoSanjabu.pdb
 C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\NanoSanjabu.genruntimeconfig.cache
 C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\ref\NanoSanjabu.dll
+C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\DashboardPage.baml
+C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\DashboardPage.g.cs
+C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\NanoSanjabu_MarkupCompile.lref
+C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\App.baml
+C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\InputPartPage.baml
+C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\InputPartPage.g.cs
+C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\HistoryPage.baml
+C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\LaminatedSectionPage.baml
+C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\HistoryPage.g.cs
+C:\ean\산자부\WPF_NANOSANJABU\NanoSanjabu\obj\Debug\net10.0-windows\LaminatedSectionPage.g.cs

@@ -1,56 +1,68 @@
-﻿using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace NanoSanjabu
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+
             AddHandler(UIElement.PreviewMouseLeftButtonDownEvent,
-        new MouseButtonEventHandler(AnyWhereDrag),
-        true);
+                new MouseButtonEventHandler(AnyWhereDrag),
+                true);
+
+            // ✅ 시작은 대시보드
+            NavigateToDashboard();
         }
+
         private void AnyWhereDrag(object sender, MouseButtonEventArgs e)
         {
-            // 버튼 같은 곳 눌렀을 때 창이 끌려가면 불편하니까,
-            // 버튼 위 클릭은 제외 (원하면 제거 가능)
+            // 버튼/텍스트박스/스크롤바 위 클릭은 드래그 제외
             if (e.OriginalSource is DependencyObject d)
             {
                 while (d != null)
                 {
                     if (d is ButtonBase || d is TextBoxBase || d is ScrollBar)
                         return;
+
                     d = VisualTreeHelper.GetParent(d);
                 }
             }
 
+            // 더블클릭: 최대화/복원
             if (e.ClickCount == 2)
             {
                 BtnMaximize_Click(sender, new RoutedEventArgs());
                 return;
             }
 
+            // 드래그 이동
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 DragMove();
             }
         }
 
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                BtnMaximize_Click(sender, new RoutedEventArgs());
+                return;
+            }
 
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        // ====== 창 제어 ======
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -61,14 +73,13 @@ namespace NanoSanjabu
             if (WindowState == WindowState.Maximized)
             {
                 WindowState = WindowState.Normal;
-                MaximizeIcon.Text = "\uE922"; // Maximize 아이콘
+                MaximizeIcon.Text = "\uE922";
             }
             else
             {
                 WindowState = WindowState.Maximized;
-                MaximizeIcon.Text = "\uE923"; // Restore 아이콘
+                MaximizeIcon.Text = "\uE923";
             }
-
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
@@ -76,21 +87,42 @@ namespace NanoSanjabu
             Close();
         }
 
-        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        // ====== 네비 버튼 클릭 ======
+        private void BtnDashboard_Click(object sender, RoutedEventArgs e) => NavigateToDashboard();
+
+        private void BtnInputPart_Click(object sender, RoutedEventArgs e)
         {
-            // 더블클릭: 최대화/복원 토글
-            if (e.ClickCount == 2)
-            {
-                BtnMaximize_Click(sender, new RoutedEventArgs());
-                return;
-            }
+            SetActiveNav(BtnNavInputPart);
+            MainFrame.Navigate(new InputPartPage());
+        }
 
-            // 드래그로 창 이동
-            if (e.ButtonState == MouseButtonState.Pressed)
-            {
-                DragMove();
-            }
+        private void BtnLaminated_Click(object sender, RoutedEventArgs e)
+        {
+            SetActiveNav(BtnNavLaminated);
+            MainFrame.Navigate(new LaminatedSectionPage());
+        }
 
+        private void BtnHistory_Click(object sender, RoutedEventArgs e)
+        {
+            SetActiveNav(BtnNavHistory);
+            MainFrame.Navigate(new HistoryPage());
+        }
+
+        private void NavigateToDashboard()
+        {
+            SetActiveNav(BtnNavDashboard);
+            MainFrame.Navigate(new DashboardPage());
+        }
+
+        // ====== Active 스타일 전환 ======
+        private void SetActiveNav(Button active)
+        {
+            BtnNavDashboard.Style = (Style)FindResource("NavItem");
+            BtnNavInputPart.Style = (Style)FindResource("NavItem");
+            BtnNavLaminated.Style = (Style)FindResource("NavItem");
+            BtnNavHistory.Style = (Style)FindResource("NavItem");
+
+            active.Style = (Style)FindResource("NavItemActive");
         }
     }
 }
