@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\ean\\\uC0B0\uC790\uBD80\\NanoSanjabu\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C7FF4A41-8371-454C-A5E5-6B09D9456CD3}|NanoSanjabu\\NanoSanjabu.csproj|c:\\ean\\\uC0B0\uC790\uBD80\\nanosanjabu\\nanosanjabu\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{C7FF4A41-8371-454C-A5E5-6B09D9456CD3}|NanoSanjabu\\NanoSanjabu.csproj|solutionrelative:nanosanjabu\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{2F7297CD-540D-6581-C502-2691D15F7421}|NanoSanjabu\\NanoSanjabu.csproj|c:\\ean\\\uC0B0\uC790\uBD80\\nanosanjabu\\nanosanjabu\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{2F7297CD-540D-6581-C502-2691D15F7421}|NanoSanjabu\\NanoSanjabu.csproj|solutionrelative:nanosanjabu\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C7FF4A41-8371-454C-A5E5-6B09D9456CD3}|NanoSanjabu\\NanoSanjabu.csproj|c:\\ean\\\uC0B0\uC790\uBD80\\nanosanjabu\\nanosanjabu\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C7FF4A41-8371-454C-A5E5-6B09D9456CD3}|NanoSanjabu\\NanoSanjabu.csproj|solutionrelative:nanosanjabu\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{2F7297CD-540D-6581-C502-2691D15F7421}|NanoSanjabu\\NanoSanjabu.csproj|c:\\ean\\\uC0B0\uC790\uBD80\\nanosanjabu\\nanosanjabu\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F7297CD-540D-6581-C502-2691D15F7421}|NanoSanjabu\\NanoSanjabu.csproj|solutionrelative:nanosanjabu\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,8 +42,7 @@
               "RelativeToolTip": "NanoSanjabu\\MainWindow.xaml.cs",
               "ViewState": "AgIAABcAAAAAAAAAAADwvyUAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-13T00:12:54.241Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-13T00:12:54.241Z"
             }
           ]
         }

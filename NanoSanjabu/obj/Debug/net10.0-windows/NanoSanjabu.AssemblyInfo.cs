@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NanoSanjabu")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c70f25dbe8f7ffd0db9642f89e3479f8f8328e12")]
 [assembly: System.Reflection.AssemblyProductAttribute("NanoSanjabu")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NanoSanjabu")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

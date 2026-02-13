@@ -282,28 +282,45 @@
                     Padding="24,0">
                     <DockPanel VerticalAlignment="Center">
                         <!-- Search Box -->
+                        <!-- Search Box -->
                         <Border DockPanel.Dock="Left"
-                            Background="#161B22"
-                            BorderBrush="#30363D"
-                            BorderThickness="1"
-                            CornerRadius="6"
-                            Padding="10,6"
-                            Width="322"
-                            Height="40">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE721;"
-                                       FontFamily="Segoe MDL2 Assets"
-                                       FontSize="14"
-                                       Foreground="#484F58"
-                                       VerticalAlignment="Center"
-                                       Margin="0,0,8,0"/>
-                                <TextBlock Text="검색"
-                                       Foreground="#484F58"
-                                       FontSize="13"
-                                       FontFamily="Segoe UI, Malgun Gothic"
-                                       VerticalAlignment="Center"/>
-                            </StackPanel>
+        Background="#161B22"
+        BorderBrush="#30363D"
+        BorderThickness="1"
+        CornerRadius="6"
+        Width="322"
+        Height="40">
+
+                            <Grid Margin="10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- 돋보기 아이콘 -->
+                                <TextBlock Grid.Column="0"
+                   Text="&#xE721;"
+                   FontFamily="Segoe MDL2 Assets"
+                   FontSize="14"
+                   Foreground="#FFF"
+                   VerticalAlignment="Center"
+                   Margin="0,0,8,0"/>
+
+                                <!-- 실제 입력 -->
+                                <TextBox Grid.Column="1"
+                                     x:Name="SearchTextBox"
+                                     FontSize="13"
+                                     Foreground="#C9D1D9"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     VerticalContentAlignment="Center"
+                                     CaretBrush="#C9D1D9"
+                                     Text=""
+                                     Padding="0"
+                                     />
+                            </Grid>
                         </Border>
+
 
                         <!-- Date Display -->
                         <StackPanel DockPanel.Dock="Right"
@@ -327,194 +344,224 @@
                     </DockPanel>
                 </Border>
 
-                <!-- ======================================== -->
-                <!-- SCROLLABLE CONTENT                       -->
-                <!-- ======================================== -->
-                <ScrollViewer Grid.Row="1"
-                          VerticalScrollBarVisibility="Auto"
-                          HorizontalScrollBarVisibility="Disabled"
-                          Padding="0">
-                    <StackPanel Margin="24,24,24,32">
+                <Grid Grid.Row="1" Margin="24,24,24,32">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- 타이틀 -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- KPI 1 -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- KPI 2 -->
+                        <RowDefinition Height="*"/>
+                        <!-- 리포트 (여기만 스크롤) -->
+                    </Grid.RowDefinitions>
 
-                        <!-- Page Title -->
+                    <!-- Page Title -->
+                    <StackPanel Grid.Row="0">
                         <TextBlock Text="대시보드"
-                               FontSize="18"
-                               FontWeight="SemiBold"
-                               Foreground="#5C70B8"
-                               FontFamily="Segoe UI, Malgun Gothic"/>
+                   FontSize="18"
+                   FontWeight="SemiBold"
+                   Foreground="#5C70B8"
+                   FontFamily="Segoe UI, Malgun Gothic"/>
                         <TextBlock Text="키랄성 나노구조체 바이오센서 제조 현황을 실시간으로 모니터링합니다"
-                               FontSize="13"
-                               Foreground="#5C70B8"
-                               FontFamily="Segoe UI, Malgun Gothic"
-                               Margin="0,4,0,20"/>
+                   FontSize="13"
+                   Foreground="#5C70B8"
+                   FontFamily="Segoe UI, Malgun Gothic"
+                   Margin="0,4,0,20"/>
+                    </StackPanel>
 
-                        <!-- ================================ -->
-                        <!-- KPI CARDS ROW 1 (4 cards)        -->
-                        <!-- ================================ -->
-                        <WrapPanel Margin="0,0,0,12">
+                    <!-- KPI 1 (4 cards) -->
+                    <WrapPanel Grid.Row="1" Margin="0,0,0,12">
 
-                            <!-- Card: 생산 수량 -->
-                            <Border Style="{StaticResource KpiCard}"
-                                Background="#141D2B"
-                                Width="391" Height="200"
-                                Margin="0,0,10,0">
-                                <StackPanel>
-                                    <TextBlock Text="생산 수량"
-                                           FontSize="13" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                    <TextBlock Text="1,234"
-                                           FontSize="40" FontWeight="Bold"
-                                           Foreground="#E6EDF3"
-                                           FontFamily="Segoe UI"
-                                           Margin="0,4,0,16"/>
-                                    <TextBlock Text="+전일 대비 12.5% 증가"
-                                           FontSize="12" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Card: 합격률 -->
-                            <Border Style="{StaticResource KpiCard}"
-                                Background="#12282A"
-                                Width="391" Height="200"
-                                Margin="0,0,10,0">
-                                <StackPanel>
-                                    <TextBlock Text="합격률"
-                                           FontSize="13" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                    <TextBlock Text="98.7%"
-                                           FontSize="40" FontWeight="Bold"
-                                           Foreground="#E6EDF3"
-                                           FontFamily="Segoe UI"
-                                           Margin="0,4,0,16"/>
-                                    <TextBlock Text="+전일 대비 12.5% 증가"
-                                           FontSize="12" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Card: 가동률 -->
-                            <Border Style="{StaticResource KpiCard}"
-                                Background="#1E2218"
-                                Width="391" Height="200"
-                                Margin="0,0,10,0">
-                                <StackPanel>
-                                    <TextBlock Text="가동률"
-                                           FontSize="13" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                    <TextBlock Text="98.3%"
-                                           FontSize="40" FontWeight="Bold"
-                                           Foreground="#E6EDF3"
-                                           FontFamily="Segoe UI"
-                                           Margin="0,4,0,16"/>
-                                    <TextBlock Text="+1.3% 전일 대비"
-                                           FontSize="12" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Card: 재공 -->
-                            <Border Style="{StaticResource KpiCard}"
-                                Background="#1E1528"
-                                Width="391" Height="200"
-                                Margin="0,0,0,0">
-                                <StackPanel>
-                                    <TextBlock Text="재공"
-                                           FontSize="13" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                    <TextBlock Text="5,689"
-                                           FontSize="40" FontWeight="Bold"
-                                           Foreground="#E6EDF3"
-                                           FontFamily="Segoe UI"
-                                           Margin="0,4,0,16"/>
-                                    <TextBlock Text="+전일 대비 5.9% 증가"
-                                           FontSize="12" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                </StackPanel>
-                            </Border>
-                        </WrapPanel>
-
-                        <!-- ================================ -->
-                        <!-- KPI CARDS ROW 2 (2 cards)        -->
-                        <!-- ================================ -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
-
-                            <!-- Card: 불량 -->
-                            <Border Style="{StaticResource KpiCard}"
-                                Background="#141D2B"
-                                Width="391" Height="200"
-                                Margin="0,0,10,0">
-                                <StackPanel>
-                                    <TextBlock Text="불량"
-                                           FontSize="13" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                    <TextBlock Text="1.2%"
-                                           FontSize="40" FontWeight="Bold"
-                                           Foreground="#E6EDF3"
-                                           FontFamily="Segoe UI"
-                                           Margin="0,4,0,16"/>
-                                    <TextBlock Text="+전일 대비 12.5% 증가"
-                                           FontSize="12" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Card: 완료 -->
-                            <Border Style="{StaticResource KpiCard}"
-                                Background="#12282A"
-                                Width="391" Height="200">
-                                <StackPanel>
-                                    <TextBlock Text="완료"
-                                           FontSize="13" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                    <TextBlock Text="14"
-                                           FontSize="40" FontWeight="Bold"
-                                           Foreground="#E6EDF3"
-                                           FontFamily="Segoe UI"
-                                           Margin="0,4,0,16"/>
-                                    <TextBlock Text="+전일 대비 12.5% 증가"
-                                           FontSize="12" Foreground="#FFF"
-                                           FontFamily="Segoe UI, Malgun Gothic"/>
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-
-                        <!-- ================================ -->
-                        <!-- REPORT LOG SECTION               -->
-                        <!-- ================================ -->
-                        <Border Background="#161B22"
-                            CornerRadius="8"
-                            Padding="24,20"
-                            BorderBrush="#21262D"
-                            BorderThickness="1"
-                            Width="1615" Height="444"
-                            HorizontalAlignment="Left">
+                        <!-- Card: 생산 수량 -->
+                        <Border Style="{StaticResource KpiCard}"
+                            Background="#141D2B"
+                            Width="391" Height="200"
+                            Margin="0,0,10,0">
                             <StackPanel>
-                                <TextBlock Text="리포트"
-                                       FontSize="20"
-                                       FontWeight="Bold"
-                                       Foreground="#E6EDF3"
-                                       FontFamily="Segoe UI, Malgun Gothic"
-                                       Margin="0,0,0,16"/>
+                                <TextBlock Text="생산 수량"
+                                   FontSize="13"
+                                   Foreground="#FFF"
+                                   FontFamily="Segoe UI, Malgun Gothic"/>
+                                <TextBlock Text="1,234"
+                                   FontSize="40"
+                                   FontWeight="Bold"
+                                   Foreground="#E6EDF3"
+                                   FontFamily="Segoe UI"
+                                   Margin="0,4,0,16"/>
+                                <TextBlock Text="+전일 대비 12.5% 증가"
+                                   FontSize="12"
+                                   Foreground="#FFF"
+                                   FontFamily="Segoe UI, Malgun Gothic"/>
+                            </StackPanel>
+                        </Border>
 
-                                <TextBlock Style="{StaticResource ReportText}"
-                                       Text="2025-10-05 09:12 | LOT A23 | 합성 공정 시작 | 설비 M-01"/>
-                                <TextBlock Style="{StaticResource ReportText}"
-                                       Text="2025-10-08 09:28 | LOT A23 | 정상 가동 중"/>
-                                <TextBlock Style="{StaticResource ReportText}"
-                                       Text="2025-10-09 09:41 | LOT B11 | 건조 공정 오류 발생 | 온도 초과"/>
-                                <TextBlock Style="{StaticResource ReportText}"
-                                       Text="2025-10-09 09:42 | LOT B11 | 공정 정지"/>
-                                <TextBlock Style="{StaticResource ReportText}"
-                                       Text="2025-10-11 09:55 | LOT B11 | 오류 조치 완료 | 공정 재개"/>
-                                <TextBlock Style="{StaticResource ReportText}"
-                                       Margin="0"
-                                       Text="2025-10-14 10:07 | LOT A23 | 공정 완료 | 불량 0"/>
+                        <!-- Card: 합격률 -->
+                        <Border Style="{StaticResource KpiCard}"
+                Background="#12282A"
+                Width="391" Height="200"
+                Margin="0,0,10,0">
+                            <StackPanel>
+                                <TextBlock Text="합격률"
+                           FontSize="13"
+                           Foreground="#FFF"
+                           FontFamily="Segoe UI, Malgun Gothic"/>
+                                <TextBlock Text="98.7%"
+                           FontSize="40"
+                           FontWeight="Bold"
+                           Foreground="#E6EDF3"
+                           FontFamily="Segoe UI"
+                           Margin="0,4,0,16"/>
+                                <TextBlock Text="+전일 대비 12.5% 증가"
+                           FontSize="12"
+                           Foreground="#FFF"
+                           FontFamily="Segoe UI, Malgun Gothic"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Card: 가동률 -->
+                        <Border Style="{StaticResource KpiCard}"
+                Background="#1E2218"
+                Width="391" Height="200"
+                Margin="0,0,10,0">
+                            <StackPanel>
+                                <TextBlock Text="가동률"
+                           FontSize="13"
+                           Foreground="#FFF"
+                           FontFamily="Segoe UI, Malgun Gothic"/>
+                                <TextBlock Text="98.3%"
+                           FontSize="40"
+                           FontWeight="Bold"
+                           Foreground="#E6EDF3"
+                           FontFamily="Segoe UI"
+                           Margin="0,4,0,16"/>
+                                <TextBlock Text="+1.3% 전일 대비"
+                           FontSize="12"
+                           Foreground="#FFF"
+                           FontFamily="Segoe UI, Malgun Gothic"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Card: 재공 -->
+                        <Border Style="{StaticResource KpiCard}"
+                Background="#1E1528"
+                Width="391" Height="200"
+                Margin="0,0,0,0">
+                            <StackPanel>
+                                <TextBlock Text="재공"
+                           FontSize="13"
+                           Foreground="#FFF"
+                           FontFamily="Segoe UI, Malgun Gothic"/>
+                                <TextBlock Text="5,689"
+                           FontSize="40"
+                           FontWeight="Bold"
+                           Foreground="#E6EDF3"
+                           FontFamily="Segoe UI"
+                           Margin="0,4,0,16"/>
+                                <TextBlock Text="+전일 대비 5.9% 증가"
+                           FontSize="12"
+                           Foreground="#FFF"
+                           FontFamily="Segoe UI, Malgun Gothic"/>
+                            </StackPanel>
+                        </Border>
+
+                    </WrapPanel>
+
+                    <!-- KPI 2 (2 cards) -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,24">
+
+                        <!-- Card: 불량 -->
+                        <Border Style="{StaticResource KpiCard}"
+                Background="#141D2B"
+                Width="391" Height="200"
+                Margin="0,0,10,0">
+                            <StackPanel>
+                                <TextBlock Text="불량"
+                           FontSize="13"
+                           Foreground="#FFF"
+                           FontFamily="Segoe UI, Malgun Gothic"/>
+                                <TextBlock Text="1.2%"
+                           FontSize="40"
+                           FontWeight="Bold"
+                           Foreground="#E6EDF3"
+                           FontFamily="Segoe UI"
+                           Margin="0,4,0,16"/>
+                                <TextBlock Text="+전일 대비 12.5% 증가"
+                           FontSize="12"
+                           Foreground="#FFF"
+                           FontFamily="Segoe UI, Malgun Gothic"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Card: 완료 -->
+                        <Border Style="{StaticResource KpiCard}"
+                Background="#12282A"
+                Width="391" Height="200">
+                            <StackPanel>
+                                <TextBlock Text="완료"
+                           FontSize="13"
+                           Foreground="#FFF"
+                           FontFamily="Segoe UI, Malgun Gothic"/>
+                                <TextBlock Text="14"
+                           FontSize="40"
+                           FontWeight="Bold"
+                           Foreground="#E6EDF3"
+                           FontFamily="Segoe UI"
+                           Margin="0,4,0,16"/>
+                                <TextBlock Text="+전일 대비 12.5% 증가"
+                           FontSize="12"
+                           Foreground="#FFF"
+                           FontFamily="Segoe UI, Malgun Gothic"/>
                             </StackPanel>
                         </Border>
 
                     </StackPanel>
-                </ScrollViewer>
+
+                    <!-- Report (여기만 스크롤) -->
+                    <Border Grid.Row="3"
+                        Background="#161B22"
+                        CornerRadius="8"
+                        Padding="24,20"
+                        BorderBrush="#21262D"
+                        BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                               Text="리포트"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="#E6EDF3"
+                               FontFamily="Segoe UI, Malgun Gothic"
+                               Margin="0,0,0,16"/>
+
+                            <!-- 리포트 로그만 스크롤 -->
+                            <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource ReportText}"
+                               Text="2025-10-05 09:12 | LOT A23 | 합성 공정 시작 | 설비 M-01"/>
+                                    <TextBlock Style="{StaticResource ReportText}"
+                               Text="2025-10-08 09:28 | LOT A23 | 정상 가동 중"/>
+                                    <TextBlock Style="{StaticResource ReportText}"
+                               Text="2025-10-09 09:41 | LOT B11 | 건조 공정 오류 발생 | 온도 초과"/>
+                                    <TextBlock Style="{StaticResource ReportText}"
+                               Text="2025-10-09 09:42 | LOT B11 | 공정 정지"/>
+                                    <TextBlock Style="{StaticResource ReportText}"
+                               Text="2025-10-11 09:55 | LOT B11 | 오류 조치 완료 | 공정 재개"/>
+                                    <TextBlock Style="{StaticResource ReportText}"
+                               Margin="0"
+                               Text="2025-10-14 10:07 | LOT A23 | 공정 완료 | 불량 0"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
+                </Grid>
+
             </Grid>
         </Grid>
     </Grid>
