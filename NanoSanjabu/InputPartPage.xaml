@@ -116,14 +116,14 @@
                                            HorizontalAlignment="Center"
                                            TextAlignment="Center"/>
                                 <TextBlock Text="{Binding StatusText}"
-                                           FontSize="9"
+                                           FontSize="10"
                                            Foreground="#222"
                                            FontFamily="Segoe UI"
                                            HorizontalAlignment="Center"
                                            TextAlignment="Center"
                                            Margin="0,2,0,0"/>
                                 <TextBlock Text="{Binding TimeText}"
-                                           FontSize="9"
+                                           FontSize="10"
                                            Foreground="#222"
                                            FontFamily="Segoe UI"
                                            HorizontalAlignment="Center"
