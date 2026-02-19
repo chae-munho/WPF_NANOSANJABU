@@ -285,7 +285,7 @@
         <!-- Report (여기만 스크롤) -->
         <Border Grid.Row="3"
           Background="#161B22"
-          CornerRadius="8"
+          CornerRadius="0"
           Padding="24,20"
           BorderBrush="#21262D"
               

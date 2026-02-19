@@ -7,9 +7,9 @@
 
         <!-- 상단 KPI 카드 스타일 -->
         <Style x:Key="KpiMiniCard" TargetType="Border">
-            <Setter Property="Width" Value="259"/>
-            <Setter Property="Height" Value="142"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Width" Value="270"/>
+            <Setter Property="Height" Value="145"/>
+            <Setter Property="CornerRadius" Value="0"/>
             <Setter Property="Padding" Value="18,14"/>
             <Setter Property="SnapsToDevicePixels" Value="True"/>
         </Style>
@@ -131,7 +131,7 @@
                 Background="#2A281F"
                 BorderBrush="#21262D"
                 BorderThickness="1"
-                CornerRadius="10"
+                CornerRadius="0"
                 Padding="18">
 
             <ItemsControl x:Name="TrayItems">
