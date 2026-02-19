@@ -34,9 +34,9 @@
 
         <!-- 하단 원 타일(116x116) : 배경색은 Binding으로 넣을거라 여기선 고정 Background 제거 -->
         <Style x:Key="TrayCircle" TargetType="Border">
-            <Setter Property="Width" Value="100"/>
-            <Setter Property="Height" Value="100"/>
-            <Setter Property="CornerRadius" Value="50"/>
+            <Setter Property="Width" Value="116"/>
+            <Setter Property="Height" Value="116"/>
+            <Setter Property="CornerRadius" Value="58"/>
             <Setter Property="BorderBrush" Value="#00000000"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
@@ -143,7 +143,7 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid Width="100" Height="100" Margin="12,10">
+                        <Grid Width="116" Height="116" Margin="5,5">
 
                             <!--  상태색을 여기 배경으로 적용 -->
                             <Border Style="{StaticResource TrayCircle}"

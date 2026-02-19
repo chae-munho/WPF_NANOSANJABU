@@ -52,7 +52,7 @@ namespace NanoSanjabu {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/NanoSanjabu;component/laminatedsectionpage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/NanoSanjabu;V1.0.0.0;component/laminatedsectionpage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\LaminatedSectionPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

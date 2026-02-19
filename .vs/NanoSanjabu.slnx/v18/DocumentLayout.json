@@ -42,19 +42,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\ean\\\uC0B0\uC790\uBD80\\WPF_NANOSANJABU\\NanoSanjabu\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "NanoSanjabu\\MainWindow.xaml",
-              "ToolTip": "C:\\ean\\\uC0B0\uC790\uBD80\\WPF_NANOSANJABU\\NanoSanjabu\\MainWindow.xaml",
-              "RelativeToolTip": "NanoSanjabu\\MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-02-13T00:12:55.334Z"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 3,
@@ -93,6 +82,17 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\ean\\\uC0B0\uC790\uBD80\\WPF_NANOSANJABU\\NanoSanjabu\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "NanoSanjabu\\MainWindow.xaml",
+              "ToolTip": "C:\\ean\\\uC0B0\uC790\uBD80\\WPF_NANOSANJABU\\NanoSanjabu\\MainWindow.xaml",
+              "RelativeToolTip": "NanoSanjabu\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-13T00:12:55.334Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
               "Title": "DashboardPage.xaml",
               "DocumentMoniker": "C:\\ean\\\uC0B0\uC790\uBD80\\WPF_NANOSANJABU\\NanoSanjabu\\DashboardPage.xaml",
@@ -100,8 +100,7 @@
               "ToolTip": "C:\\ean\\\uC0B0\uC790\uBD80\\WPF_NANOSANJABU\\NanoSanjabu\\DashboardPage.xaml",
               "RelativeToolTip": "NanoSanjabu\\DashboardPage.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-02-13T08:55:10.682Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-13T08:55:10.682Z"
             },
             {
               "$type": "Document",
