@@ -288,6 +288,8 @@
           CornerRadius="8"
           Padding="24,20"
           BorderBrush="#21262D"
+              
+             
           BorderThickness="1">
             <Grid>
                 <Grid.RowDefinitions>
