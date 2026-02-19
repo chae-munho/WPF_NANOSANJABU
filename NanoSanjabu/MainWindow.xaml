@@ -12,7 +12,7 @@
     <Window.Resources>
       
 
-        <!-- Nav Item Style -->
+      
         <Style x:Key="NavItem" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#8B949E"/>
@@ -41,13 +41,13 @@
             </Setter>
         </Style>
 
-        <!-- Active Nav Item Style -->
+     
         <Style x:Key="NavItemActive" TargetType="Button" BasedOn="{StaticResource NavItem}">
             <Setter Property="Background" Value="#1C2128"/>
             <Setter Property="Foreground" Value="#E6EDF3"/>
         </Style>
 
-        <!-- Window Control Button Base -->
+      
         <Style x:Key="WindowControlBtn" TargetType="Button">
             <Setter Property="Width" Value="46"/>
             <Setter Property="Height" Value="32"/>
@@ -79,7 +79,7 @@
             </Setter>
         </Style>
 
-        <!-- Close Button (Red hover) -->
+      
         <Style x:Key="CloseBtn" TargetType="Button" BasedOn="{StaticResource WindowControlBtn}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -105,7 +105,7 @@
         </Style>
     </Window.Resources>
 
-    <!-- WindowChrome for custom title bar with resize support -->
+  
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="32"
                       ResizeBorderThickness="6"
@@ -121,7 +121,7 @@
         </Grid.RowDefinitions>
 
        
-        <!-- CUSTOM TITLE BAR   -->
+     
       
         <Grid Grid.Row="0" Background="#0D1117" >
             <Grid.ColumnDefinitions>
@@ -129,7 +129,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Title Bar Text (optional, draggable area) -->
+         
             <TextBlock Grid.Column="0"
                        Text="  MES Platform"
                        Foreground="#484F58"
@@ -138,11 +138,11 @@
                        VerticalAlignment="Center"
                        Margin="8,0,0,0"/>
 
-            <!-- Window Control Buttons -->
+          
             <StackPanel Grid.Column="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
-                <!-- Minimize -->
+              
                 <Button Style="{StaticResource WindowControlBtn}"
                         Click="BtnMinimize_Click">
                     <TextBlock Text="&#xE921;"
@@ -150,7 +150,7 @@
                                FontSize="10"
                                Foreground="#8B949E"/>
                 </Button>
-                <!-- Maximize / Restore -->
+               
                 <Button x:Name="BtnMaximize"
                         Style="{StaticResource WindowControlBtn}"
                         Click="BtnMaximize_Click">
@@ -160,7 +160,7 @@
                                FontSize="10"
                                Foreground="#8B949E"/>
                 </Button>
-                <!-- Close -->
+              
                 <Button Style="{StaticResource CloseBtn}"
                         Click="BtnClose_Click">
                     <TextBlock Text="&#xE8BB;"
@@ -172,7 +172,7 @@
         </Grid>
 
       
-        <!-- MAIN LAYOUT  -->
+       
       
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -181,14 +181,14 @@
             </Grid.ColumnDefinitions>
 
            
-            <!-- LEFT SIDEBAR  -->
+          
           
             <Border Grid.Column="0"
                 Background="#0D1117"
                 BorderBrush="#21262D"
                 BorderThickness="0,0,1,0">
                 <DockPanel>
-                    <!-- Logo / Title -->
+                   
                     <TextBlock DockPanel.Dock="Top"
                            Text="MES Platform"
                            FontSize="20"
@@ -197,10 +197,10 @@
                            FontFamily="Segoe UI, Malgun Gothic"
                            Margin="16,18,16,24"/>
 
-                    <!-- Navigation -->
+                  
                     <StackPanel Margin="8,0">
 
-                        <!-- Dashboard (Active) -->
+                     
                         <Button x:Name="BtnNavDashboard" Style="{StaticResource NavItemActive}" Margin="0,2" Click="BtnDashboard_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/images/dashboard.png"
@@ -212,7 +212,7 @@
                             </StackPanel>
                         </Button>
 
-                        <!-- 투입부 -->
+                      
                         <Button x:Name="BtnNavInputPart" Style="{StaticResource NavItem}" Margin="0,2" Click="BtnInputPart_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/images/inputPart.png"
@@ -224,7 +224,7 @@
                             </StackPanel>
                         </Button>
 
-                        <!-- 적용부 -->
+                     
                         <Button x:Name="BtnNavLaminated" Style="{StaticResource NavItem}" Margin="0,2" Click="BtnLaminated_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/images/laminatedsection.png"
@@ -236,7 +236,7 @@
                             </StackPanel>
                         </Button>
 
-                        <!-- 히스토리 -->
+                      
                         <Button x:Name="BtnNavHistory" Style="{StaticResource NavItem}" Margin="0,2" Click="BtnHistory_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/images/history.png"
@@ -262,7 +262,7 @@
                 </Grid.RowDefinitions>
 
                
-                <!-- TOP BAR -->
+              
              
                 <Border Grid.Row="0"
                     Background="#0D1117"
@@ -271,7 +271,7 @@
                     Padding="24,0">
                     <DockPanel VerticalAlignment="Center">
                       
-                        <!-- Search Box -->
+                     
                         <Border DockPanel.Dock="Left"
                             Background="#161B22"
                             BorderBrush="#30363D"
@@ -286,7 +286,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <!-- 돋보기 아이콘 -->
+                             
                                 <TextBlock Grid.Column="0"
                                    Text="&#xE721;"
                                    FontFamily="Segoe MDL2 Assets"
@@ -295,7 +295,7 @@
                                    VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>
 
-                                <!-- 실제 입력 -->
+                              
                                 <TextBox Grid.Column="1"
                                      x:Name="SearchTextBox"
                                      FontSize="13"
@@ -311,7 +311,7 @@
                         </Border>
 
 
-                        <!-- Date Display -->
+                     
                         <StackPanel DockPanel.Dock="Right"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center">
@@ -328,13 +328,13 @@
                                    VerticalAlignment="Center"/>
                         </StackPanel>
 
-                        <!-- Spacer -->
+                      
                         <Border/>
                     </DockPanel>
                 </Border>
 
                 
-                <!--Main 영역 최상단-->
+              
                 <Frame x:Name="MainFrame"
                    Grid.Row="1"
                    Margin="24,24,24,32"
