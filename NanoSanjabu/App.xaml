@@ -71,7 +71,7 @@
         <Style x:Key="LamKpiCard" TargetType="Border">
             <Setter Property="Width" Value="259"/>
             <Setter Property="Height" Value="142"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="CornerRadius" Value="0"/>
             <Setter Property="Padding" Value="18,14"/>
             <Setter Property="BorderBrush" Value="#21262D"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -110,6 +110,36 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
         <!-- LaminatedSectionPage.xaml 스타일 끝 -->
+        
+        <!--HistoryPage.xaml 스타일 시작-->
+        <!-- 공통 텍스트 스타일 -->
+        <Style x:Key="TitleText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#E6EDF3"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Malgun Gothic"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="LabelText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#AAB4C0"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Malgun Gothic"/>
+        </Style>
+
+        <Style x:Key="ValueText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#E6EDF3"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Malgun Gothic"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <!-- 카드 공통 -->
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderBrush" Value="#21262D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="18"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <!--HistoryPage.xaml 스타일 끝-->
 
 
     </Application.Resources>

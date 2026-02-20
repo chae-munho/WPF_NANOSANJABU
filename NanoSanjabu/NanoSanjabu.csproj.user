@@ -2,16 +2,16 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="DashboardPage.xaml.cs">
+    <Compile Update="Views\DashboardPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="HistoryPage.xaml.cs">
+    <Compile Update="Views\HistoryPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="InputPartPage.xaml.cs">
+    <Compile Update="Views\InputPartPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="LaminatedSectionPage.xaml.cs">
+    <Compile Update="Views\LaminatedSectionPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

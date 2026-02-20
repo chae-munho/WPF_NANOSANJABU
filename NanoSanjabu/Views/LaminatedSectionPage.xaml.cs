@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NanoSanjabu
+namespace NanoSanjabu.Views
 {
     /// <summary>
     /// LaminatedSectionPage.xaml에 대한 상호 작용 논리

@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace NanoSanjabu
+namespace NanoSanjabu.Views
 {
     public partial class InputPartPage : Page
     {
