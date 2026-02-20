@@ -16,13 +16,13 @@ namespace NanoSanjabu
                 new MouseButtonEventHandler(AnyWhereDrag),
                 true);
 
-            // ✅ 시작은 대시보드
+         
             NavigateToDashboard();
         }
 
         private void AnyWhereDrag(object sender, MouseButtonEventArgs e)
         {
-            // 버튼/텍스트박스/스크롤바 위 클릭은 드래그 제외
+          
             if (e.OriginalSource is DependencyObject d)
             {
                 while (d != null)
@@ -34,14 +34,14 @@ namespace NanoSanjabu
                 }
             }
 
-            // 더블클릭: 최대화/복원
+        
             if (e.ClickCount == 2)
             {
                 BtnMaximize_Click(sender, new RoutedEventArgs());
                 return;
             }
 
-            // 드래그 이동
+          
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 DragMove();
@@ -62,7 +62,7 @@ namespace NanoSanjabu
             }
         }
 
-        // ====== 창 제어 ======
+     
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -87,7 +87,7 @@ namespace NanoSanjabu
             Close();
         }
 
-        // ====== 네비 버튼 클릭 ======
+        //  네비 버튼 클릭 
         private void BtnDashboard_Click(object sender, RoutedEventArgs e) => NavigateToDashboard();
 
         private void BtnInputPart_Click(object sender, RoutedEventArgs e)
@@ -114,7 +114,7 @@ namespace NanoSanjabu
             MainFrame.Navigate(new DashboardPage());
         }
 
-        // ====== Active 스타일 전환 ======
+        //  Active 스타일 전환 
         private void SetActiveNav(Button active)
         {
             BtnNavDashboard.Style = (Style)FindResource("NavItem");

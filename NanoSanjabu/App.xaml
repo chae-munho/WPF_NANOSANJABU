@@ -4,24 +4,113 @@
              xmlns:local="clr-namespace:NanoSanjabu"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!-- Base Text Style -->
+        <!--MainWindow.xaml 시작-->
+       
         <Style x:Key="BaseText" TargetType="TextBlock">
             <Setter Property="Foreground" Value="#C9D1D9"/>
             <Setter Property="FontFamily" Value="Segoe UI, Malgun Gothic"/>
         </Style>
 
-        <!-- KPI Card Base Style -->
+      
         <Style x:Key="KpiCard" TargetType="Border">
             <Setter Property="CornerRadius" Value="0"/>
             <Setter Property="Padding" Value="20,16"/>
         </Style>
 
-        <!-- Report Row Style -->
+      
         <Style x:Key="ReportText" TargetType="TextBlock" BasedOn="{StaticResource BaseText}">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Margin" Value="0,0,0,12"/>
             <Setter Property="Foreground" Value="#C9D1D9"/>
         </Style>
+        <!--MainWindow.xaml 스타일 끝-->
+        
+        <!--InputPartPage.xaml 시작-->
+        <Style x:Key="KpiMiniCard" TargetType="Border">
+            <Setter Property="Width" Value="270"/>
+            <Setter Property="Height" Value="145"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="Padding" Value="18,14"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <Style x:Key="KpiBigNumber" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="50"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#FFF"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="KpiLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="#C9D1D9"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Malgun Gothic"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,6,0,0"/>
+        </Style>
+
+     
+        <Style x:Key="TrayCircle" TargetType="Border">
+            <Setter Property="Width" Value="116"/>
+            <Setter Property="Height" Value="116"/>
+            <Setter Property="CornerRadius" Value="58"/>
+            <Setter Property="BorderBrush" Value="#00000000"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+     
+        <SolidColorBrush x:Key="StatusRun" Color="#00A36E"/>
+        <SolidColorBrush x:Key="StatusComplete" Color="#3650A1"/>
+        <SolidColorBrush x:Key="StatusStop" Color="#BFBFBF"/>
+        <!--InputPartPage.xaml 스타일 끝-->
+
+        <!-- LaminatedSectionPage.xaml 스타일 시작 -->
+        <Style x:Key="LamKpiCard" TargetType="Border">
+            <Setter Property="Width" Value="259"/>
+            <Setter Property="Height" Value="142"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="18,14"/>
+            <Setter Property="BorderBrush" Value="#21262D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <Style x:Key="LamKpiBigNumber" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="50"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#FFF"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="LamKpiLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="#FFF"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Malgun Gothic"/>
+            <Setter Property="Margin" Value="0,6,0,0"/>
+        </Style>
+
+        <Style x:Key="LamTrayCircle" TargetType="Border">
+            <Setter Property="Width" Value="226"/>
+            <Setter Property="Height" Value="226"/>
+            <Setter Property="CornerRadius" Value="113"/>
+            <Setter Property="BorderBrush" Value="#00000000"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+
+        <Style x:Key="LamTrayText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="#000"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Malgun Gothic"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <!-- LaminatedSectionPage.xaml 스타일 끝 -->
+
 
     </Application.Resources>
 </Application>

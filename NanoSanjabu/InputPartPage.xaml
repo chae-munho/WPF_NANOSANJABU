@@ -3,50 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent">
 
-    <Page.Resources>
 
-        <!-- 상단 KPI 카드 스타일 -->
-        <Style x:Key="KpiMiniCard" TargetType="Border">
-            <Setter Property="Width" Value="270"/>
-            <Setter Property="Height" Value="145"/>
-            <Setter Property="CornerRadius" Value="0"/>
-            <Setter Property="Padding" Value="18,14"/>
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-        </Style>
-
-        <Style x:Key="KpiBigNumber" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="44"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="#E6EDF3"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="TextAlignment" Value="Center"/>
-        </Style>
-
-        <Style x:Key="KpiLabel" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="#C9D1D9"/>
-            <Setter Property="FontFamily" Value="Segoe UI, Malgun Gothic"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0,6,0,0"/>
-        </Style>
-
-        <!-- 하단 원 타일(116x116) : 배경색은 Binding으로 넣을거라 여기선 고정 Background 제거 -->
-        <Style x:Key="TrayCircle" TargetType="Border">
-            <Setter Property="Width" Value="116"/>
-            <Setter Property="Height" Value="116"/>
-            <Setter Property="CornerRadius" Value="58"/>
-            <Setter Property="BorderBrush" Value="#00000000"/>
-            <Setter Property="BorderThickness" Value="0"/>
-        </Style>
-
-        <!-- 상태 색(예시) -->
-        <SolidColorBrush x:Key="StatusRun" Color="#00A36E"/>
-        <SolidColorBrush x:Key="StatusComplete" Color="#5C70B8"/>
-        <SolidColorBrush x:Key="StatusStop" Color="#8B949E"/>
-
-    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -57,7 +14,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- ===== 상단 KPI 6개 ===== -->
+      
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -116,7 +73,7 @@
             </Border>
         </Grid>
 
-        <!-- ===== 섹션 타이틀 ===== -->
+       
         <TextBlock Grid.Row="2"
                    Text="트레이 A - 작업 중"
                    Foreground="#E6EDF3"
@@ -125,7 +82,7 @@
                    FontFamily="Segoe UI, Malgun Gothic"
                    Margin="2,0,0,0"/>
 
-        <!-- ===== 원 50개 영역(5x10) ===== -->
+      
         <Border Grid.Row="4"
                 VerticalAlignment="Top"
                 Background="#2A281F"
@@ -145,11 +102,11 @@
                     <DataTemplate>
                         <Grid Width="116" Height="116" Margin="5,5">
 
-                            <!--  상태색을 여기 배경으로 적용 -->
+                           
                             <Border Style="{StaticResource TrayCircle}"
                                     Background="{Binding StatusBrush}"/>
 
-                            <!-- 중앙 텍스트 -->
+                         
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <TextBlock Text="{Binding TrayText}"
                                            FontSize="11"
@@ -159,14 +116,14 @@
                                            HorizontalAlignment="Center"
                                            TextAlignment="Center"/>
                                 <TextBlock Text="{Binding StatusText}"
-                                           FontSize="9"
+                                           FontSize="10"
                                            Foreground="#222"
                                            FontFamily="Segoe UI"
                                            HorizontalAlignment="Center"
                                            TextAlignment="Center"
                                            Margin="0,2,0,0"/>
                                 <TextBlock Text="{Binding TimeText}"
-                                           FontSize="9"
+                                           FontSize="10"
                                            Foreground="#222"
                                            FontFamily="Segoe UI"
                                            HorizontalAlignment="Center"
