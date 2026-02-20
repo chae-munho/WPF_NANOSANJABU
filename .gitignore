@@ -1,0 +1,13 @@
+# Visual Studio
+.vs/
+
+# Build output
+bin/
+obj/
+
+# VS user files
+*.user
+*.suo
+
+# Database caches
+*.db
