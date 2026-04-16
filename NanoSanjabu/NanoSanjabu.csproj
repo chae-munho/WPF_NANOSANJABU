@@ -1,33 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Images\dashboard.png" />
-    <None Remove="Images\history.png" />
-    <None Remove="Images\inputPart.png" />
-    <None Remove="Images\laminatedsection.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Images\dashboard.png" />
+		<None Remove="Images\history.png" />
+		<None Remove="Images\inputPart.png" />
+		<None Remove="Images\laminatedsection.png" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Images\dashboard.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\history.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\inputPart.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\laminatedsection.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Images\dashboard.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\history.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\inputPart.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\laminatedsection.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MySqlConnector" Version="2.5.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.6" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.6" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="10.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="appsettings.Development.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

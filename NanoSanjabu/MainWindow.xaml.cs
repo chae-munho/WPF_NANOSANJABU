@@ -4,6 +4,8 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using NanoSanjabu.Views;
+using NanoSanjabu.Services;
+using System;
 
 namespace NanoSanjabu
 {
@@ -17,8 +19,35 @@ namespace NanoSanjabu
                 new MouseButtonEventHandler(AnyWhereDrag),
                 true);
 
-         
+            Loaded += MainWindow_Loaded;
+
             NavigateToDashboard();
+
+        }
+
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var db = new DatabaseService();
+
+                bool connected = await db.TestConnectionAsync();
+                int result = await db.ExecuteScalarTestAsync();
+
+                MessageBox.Show(
+                    $"DB 연결 성공\nConnected: {connected}\nSELECT 1 결과: {result}",
+                    "DB 테스트",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"DB 연결 실패\n\n{ex.GetType().FullName}\n\n{ex.Message}\n\n{ex.InnerException?.Message}",
+                    "DB 오류",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
 
         private void AnyWhereDrag(object sender, MouseButtonEventArgs e)
