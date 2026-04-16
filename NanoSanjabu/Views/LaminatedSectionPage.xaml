@@ -102,7 +102,7 @@
 
                         <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource LamTrayCircle}" Background="#FF3B30">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Tray 2 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
+                                <TextBlock Text="[ Lot 2 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
                                 <TextBlock Text="LOT A6~10" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="합성 중" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="RUN" Style="{StaticResource LamTrayText}"/>
@@ -112,7 +112,7 @@
 
                         <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Tray 4 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
+                                <TextBlock Text="[ Lot 4 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
                                 <TextBlock Text="LOT A16~20" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}" />
@@ -122,7 +122,7 @@
 
                         <Border Grid.Row="0" Grid.Column="4" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Tray 6 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
+                                <TextBlock Text="[ Lot 6 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
                                 <TextBlock Text="LOT A26~30" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}" />
@@ -132,7 +132,7 @@
 
                         <Border Grid.Row="0" Grid.Column="6" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Tray 8 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
+                                <TextBlock Text="[ Lot 8 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
                                 <TextBlock Text="LOT A36~40" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}"/>
@@ -142,7 +142,7 @@
 
                         <Border Grid.Row="0" Grid.Column="8" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Tray 10 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
+                                <TextBlock Text="[ Lot 10 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
                                 <TextBlock Text="LOT A46~50" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}" />
@@ -154,7 +154,7 @@
 
                         <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource LamTrayCircle}" Background="#D7F04A">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Tray 1 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
+                                <TextBlock Text="[ Lot 1 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
                                 <TextBlock Text="LOT A1~5" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="합성 중지" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="COMPLETE" Style="{StaticResource LamTrayText}"/>
@@ -164,7 +164,7 @@
 
                         <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Tray 3 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
+                                <TextBlock Text="[ Lot 3 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
                                 <TextBlock Text="LOT A11~15" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}"/>
@@ -174,7 +174,7 @@
 
                         <Border Grid.Row="2" Grid.Column="4" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Tray 5 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
+                                <TextBlock Text="[ Lot 5 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
                                 <TextBlock Text="LOT A21~25" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}"/>
@@ -184,7 +184,7 @@
 
                         <Border Grid.Row="2" Grid.Column="6" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Tray 7 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
+                                <TextBlock Text="[ Lot 7 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
                                 <TextBlock Text="LOT A31~35" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}" />
@@ -194,7 +194,7 @@
 
                         <Border Grid.Row="2" Grid.Column="8" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Tray 9 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
+                                <TextBlock Text="[ Lot 9 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
                                 <TextBlock Text="LOT A41~45" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
                                 <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}"/>

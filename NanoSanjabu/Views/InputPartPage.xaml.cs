@@ -39,7 +39,7 @@ namespace NanoSanjabu.Views
 
                     items.Add(new TrayItem
                     {
-                        TrayText = $"Tray {trayNumber}",
+                        TrayText = $"Lot {trayNumber}",
                         StatusText = status,
                         TimeText = "TIME: 0m",
                         StatusBrush = brush

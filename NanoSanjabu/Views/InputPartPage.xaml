@@ -56,19 +56,12 @@
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="8" Style="{StaticResource KpiMiniCard}" Background="#2A151A">
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="0" Style="{StaticResource KpiBigNumber}"/>
-                    <TextBlock Text="에러" Style="{StaticResource KpiLabel}"/>
-                </StackPanel>
-            </Border>
-
-            <Border Grid.Column="10" Style="{StaticResource KpiMiniCard}" Background="#1D1630">
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="0" Style="{StaticResource KpiBigNumber}"/>
-                    <TextBlock Text="보류" Style="{StaticResource KpiLabel}"/>
-                </StackPanel>
-            </Border>
+			<Border Grid.Column="8" Style="{StaticResource KpiMiniCard}" Background="#2A151A">
+				<StackPanel VerticalAlignment="Center">
+					<TextBlock Text="0" Style="{StaticResource KpiBigNumber}"/>
+					<TextBlock Text="에러" Style="{StaticResource KpiLabel}"/>
+				</StackPanel>
+			</Border>
         </Grid>
 
        
