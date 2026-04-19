@@ -11,148 +11,98 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- 상단 타이틀 -->
         <TextBlock Grid.Row="0"
                    Text="히스토리"
                    Style="{StaticResource TitleText}"
                    FontSize="20"/>
 
-        <!-- 기간 요약 리포트 -->
         <TextBlock Grid.Row="1"
                    Text="기간 요약 리포트"
                    Style="{StaticResource TitleText}"
                    FontSize="16"
                    Margin="0,18,0,10"/>
 
-        <!-- 요약 4카드 -->
         <UniformGrid Grid.Row="2" Columns="4" Margin="0,0,0,18">
-            <!-- 카드 1 -->
             <Border Style="{StaticResource CardBorder}" Background="#141A23" Margin="0,0,12,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-
                     <TextBlock Text="총 LOT 수" Style="{StaticResource LabelText}" FontSize="12"/>
-                    <TextBlock Grid.Row="1" Text="986" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="TxtTotalLotCount" Grid.Row="1" Text="0" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
                 </Grid>
             </Border>
 
-            <!-- 카드 2 -->
             <Border Style="{StaticResource CardBorder}" Background="#12263B" Margin="0,0,12,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-
                     <TextBlock Text="총 생산 UNIT" Style="{StaticResource LabelText}" FontSize="12"/>
-                    <TextBlock Grid.Row="1" Text="5,320" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="TxtTotalProducedUnit" Grid.Row="1" Text="0" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
                 </Grid>
             </Border>
 
-            <!-- 카드 3 -->
             <Border Style="{StaticResource CardBorder}" Background="#25231D" Margin="0,0,12,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-
                     <TextBlock Text="평균 공정 소요 시간" Style="{StaticResource LabelText}" FontSize="12"/>
-                    <TextBlock Grid.Row="1" Text="94" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="TxtAvgProcessMinutes" Grid.Row="1" Text="0" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
                 </Grid>
             </Border>
 
-            <!-- 카드 4 -->
             <Border Style="{StaticResource CardBorder}" Background="#0F2A2A">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-
                     <TextBlock Text="재작업 LOT" Style="{StaticResource LabelText}" FontSize="12"/>
-                    <TextBlock Grid.Row="1" Text="3" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="TxtReworkLotCount" Grid.Row="1" Text="0" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
                 </Grid>
             </Border>
         </UniformGrid>
 
-        <!-- 아래 타일 영역 -->
         <Grid Grid.Row="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="날짜별 생산 &amp; 에러 트렌드"
+            <TextBlock Text="최근 이벤트"
                        Style="{StaticResource TitleText}"
                        FontSize="14"
                        Margin="0,0,0,10"/>
 
-            <!-- 스크롤 가능한 타일 -->
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <WrapPanel ItemHeight="210" ItemWidth="210">
-
-                    <!-- 타일 1 -->
-                    <Border Style="{StaticResource CardBorder}" Background="#1A2230" Margin="0,0,12,12" Width="210" Height="210">
-                        <StackPanel>
-                            <TextBlock Text="2025-10-11" Style="{StaticResource TitleText}" FontSize="14" Margin="0,0,0,10"/>
-                            <TextBlock Text="LOT: NANO-10123" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="공정: 합성" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="설비: SYN-M01" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="시작: 08:12" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="종료: 09:05" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="소요: 53분" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="상태: COMPLETE" Style="{StaticResource LabelText}" FontSize="11" Margin="0,8,0,0"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- 타일 2 -->
-                    <Border Style="{StaticResource CardBorder}" Background="#162C3A" Margin="0,0,12,12" Width="210" Height="210">
-                        <StackPanel>
-                            <TextBlock Text="2025-10-13" Style="{StaticResource TitleText}" FontSize="14" Margin="0,0,0,10"/>
-                            <TextBlock Text="LOT: NANO-10124" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="공정: 합성" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="설비: SYN-M02" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="시작: 10:21" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="종료: 11:34" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="소요: 73분" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="이슈: 온도 편차 +2.1°C" Style="{StaticResource LabelText}" FontSize="11" Margin="0,8,0,0"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- 타일 3 -->
-                    <Border Style="{StaticResource CardBorder}" Background="#2A271D" Margin="0,0,12,12" Width="210" Height="210">
-                        <StackPanel>
-                            <TextBlock Text="2025-10-15" Style="{StaticResource TitleText}" FontSize="14" Margin="0,0,0,10"/>
-                            <TextBlock Text="LOT: NANO-10125" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="공정: 건조" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="설비: DRY-M01" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="시작: 09:02" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="종료: 10:48" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="수분 제거율: 98.4%" Style="{StaticResource LabelText}" FontSize="11" Margin="0,8,0,0"/>
-                            <TextBlock Text="상태: COMPLETE" Style="{StaticResource LabelText}" FontSize="11"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- 타일 4 (색 다르게) -->
-                    <Border Style="{StaticResource CardBorder}" Background="#12312B" Margin="0,0,12,12" Width="210" Height="210">
-                        <StackPanel>
-                            <TextBlock Text="2025-10-18" Style="{StaticResource TitleText}" FontSize="14" Margin="0,0,0,10"/>
-                            <TextBlock Text="LOT: NANO-10126" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="공정: 합성" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="설비: SYN-M01" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="입자 평균 크기: 48.2nm" Style="{StaticResource LabelText}" FontSize="11" Margin="0,8,0,0"/>
-                            <TextBlock Text="편차: ±1.8nm" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="합격률: 99.1%" Style="{StaticResource LabelText}" FontSize="11"/>
-                            <TextBlock Text="상태: COMPLETE" Style="{StaticResource LabelText}" FontSize="11"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- 필요한 만큼 타일 계속 추가 -->
-                </WrapPanel>
+                <ItemsControl x:Name="HistoryReportItemsControl">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource CardBorder}" Background="#1A2230" Margin="0,0,12,12" Width="210" Height="140">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding EventTime, StringFormat=yyyy-MM-dd HH:mm:ss}"
+                                               Style="{StaticResource TitleText}"
+                                               FontSize="14"
+                                               Margin="0,0,0,10"/>
+                                    <TextBlock Text="{Binding Message}"
+                                               Style="{StaticResource LabelText}"
+                                               FontSize="11"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
             </ScrollViewer>
         </Grid>
     </Grid>

@@ -1,26 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using NanoSanjabu.Services;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace NanoSanjabu.Views
 {
-    /// <summary>
-    /// HistoryPage.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class HistoryPage : Page
     {
         public HistoryPage()
         {
             InitializeComponent();
+
+            Loaded += HistoryPage_Loaded;
+            Unloaded += HistoryPage_Unloaded;
+        }
+
+        private void HistoryPage_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            AppServices.MesRuntimeService.SnapshotUpdated += MesRuntimeService_SnapshotUpdated;
+            Render();
+        }
+
+        private void HistoryPage_Unloaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            AppServices.MesRuntimeService.SnapshotUpdated -= MesRuntimeService_SnapshotUpdated;
+        }
+
+        private void MesRuntimeService_SnapshotUpdated(object? sender, System.EventArgs e)
+        {
+            Dispatcher.Invoke(Render);
+        }
+
+        private void Render()
+        {
+            var snapshot = AppServices.MesRuntimeService.CurrentSnapshot;
+
+            TxtTotalLotCount.Text = snapshot.History.TotalLotCount.ToString();
+            TxtTotalProducedUnit.Text = snapshot.History.TotalProducedUnit.ToString();
+            TxtAvgProcessMinutes.Text = snapshot.History.AverageProcessMinutes.ToString();
+            TxtReworkLotCount.Text = snapshot.History.ReworkLotCount.ToString();
+
+            HistoryReportItemsControl.ItemsSource = snapshot.Reports;
         }
     }
 }

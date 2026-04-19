@@ -1,11 +1,11 @@
-﻿using System.Windows;
+﻿using NanoSanjabu.Services;
+using NanoSanjabu.Views;
+using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using NanoSanjabu.Views;
-using NanoSanjabu.Services;
-using System;
 
 namespace NanoSanjabu
 {
@@ -20,22 +20,18 @@ namespace NanoSanjabu
                 true);
 
             Loaded += MainWindow_Loaded;
-
             NavigateToDashboard();
-
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                var db = new DatabaseService();
-
-                bool connected = await db.TestConnectionAsync();
-                int result = await db.ExecuteScalarTestAsync();
+                bool connected = await AppServices.DatabaseService.TestConnectionAsync();
+                int result = await AppServices.DatabaseService.ExecuteScalarTestAsync();
 
                 MessageBox.Show(
-                    $"DB 연결 성공\nConnected: {connected}\nSELECT 1 결과: {result}",
+                    $"로컬 DB 연결 성공\nConnected: {connected}\nSELECT 1 결과: {result}",
                     "DB 테스트",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -43,56 +39,74 @@ namespace NanoSanjabu
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"DB 연결 실패\n\n{ex.GetType().FullName}\n\n{ex.Message}\n\n{ex.InnerException?.Message}",
+                    $"DB 연결 실패\n\n{ex.Message}",
                     "DB 오류",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
+            }
+
+            try
+            {
+                await AppServices.MesRuntimeService.InitializeSnapshotAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"초기 데이터 로딩 실패\n\n{ex.Message}",
+                    "초기화 오류",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+
+            try
+            {
+                var plcService = new PlcService();
+                AppServices.AttachPlcService(plcService);
+                await AppServices.MesRuntimeService.StartPlcAsync();
+
+                MessageBox.Show(
+                    "PLC 연결 성공",
+                    "PLC 상태",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"PLC 미연결 상태로 실행합니다.\n\n{ex.Message}",
+                    "PLC 상태",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
 
         private void AnyWhereDrag(object sender, MouseButtonEventArgs e)
         {
-          
             if (e.OriginalSource is DependencyObject d)
             {
                 while (d != null)
                 {
                     if (d is ButtonBase || d is TextBoxBase || d is ScrollBar)
+                    {
                         return;
+                    }
 
                     d = VisualTreeHelper.GetParent(d);
                 }
             }
 
-        
             if (e.ClickCount == 2)
             {
                 BtnMaximize_Click(sender, new RoutedEventArgs());
                 return;
             }
 
-          
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 DragMove();
             }
         }
 
-        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2)
-            {
-                BtnMaximize_Click(sender, new RoutedEventArgs());
-                return;
-            }
-
-            if (e.ButtonState == MouseButtonState.Pressed)
-            {
-                DragMove();
-            }
-        }
-
-     
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -117,8 +131,10 @@ namespace NanoSanjabu
             Close();
         }
 
-        //  네비 버튼 클릭 
-        private void BtnDashboard_Click(object sender, RoutedEventArgs e) => NavigateToDashboard();
+        private void BtnDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToDashboard();
+        }
 
         private void BtnInputPart_Click(object sender, RoutedEventArgs e)
         {
@@ -144,7 +160,6 @@ namespace NanoSanjabu
             MainFrame.Navigate(new DashboardPage());
         }
 
-        //  Active 스타일 전환 
         private void SetActiveNav(Button active)
         {
             BtnNavDashboard.Style = (Style)FindResource("NavItem");

@@ -12,74 +12,69 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-      
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
+                <ColumnDefinition/>
                 <ColumnDefinition Width="0"/>
-                <ColumnDefinition />
+                <ColumnDefinition/>
                 <ColumnDefinition Width="0"/>
-                <ColumnDefinition />
+                <ColumnDefinition/>
                 <ColumnDefinition Width="0"/>
-                <ColumnDefinition />
+                <ColumnDefinition/>
                 <ColumnDefinition Width="0"/>
-                <ColumnDefinition />
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition />
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource KpiMiniCard}" Background="#121822">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="50" Style="{StaticResource KpiBigNumber}"/>
+                    <TextBlock x:Name="TxtTotalCount" Text="50" Style="{StaticResource KpiBigNumber}"/>
                     <TextBlock Text="총 수량" Style="{StaticResource KpiLabel}"/>
                 </StackPanel>
             </Border>
 
             <Border Grid.Column="2" Style="{StaticResource KpiMiniCard}" Background="#102237">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="48" Style="{StaticResource KpiBigNumber}"/>
+                    <TextBlock x:Name="TxtWaitingCount" Text="0" Style="{StaticResource KpiBigNumber}"/>
                     <TextBlock Text="대기" Style="{StaticResource KpiLabel}"/>
                 </StackPanel>
             </Border>
 
             <Border Grid.Column="4" Style="{StaticResource KpiMiniCard}" Background="#2A271E">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="3" Style="{StaticResource KpiBigNumber}"/>
+                    <TextBlock x:Name="TxtRunningCount" Text="0" Style="{StaticResource KpiBigNumber}"/>
                     <TextBlock Text="진행 중" Style="{StaticResource KpiLabel}"/>
                 </StackPanel>
             </Border>
 
             <Border Grid.Column="6" Style="{StaticResource KpiMiniCard}" Background="#0C2B26">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="3" Style="{StaticResource KpiBigNumber}"/>
+                    <TextBlock x:Name="TxtCompleteCount" Text="0" Style="{StaticResource KpiBigNumber}"/>
                     <TextBlock Text="완료" Style="{StaticResource KpiLabel}"/>
                 </StackPanel>
             </Border>
 
-			<Border Grid.Column="8" Style="{StaticResource KpiMiniCard}" Background="#2A151A">
-				<StackPanel VerticalAlignment="Center">
-					<TextBlock Text="0" Style="{StaticResource KpiBigNumber}"/>
-					<TextBlock Text="에러" Style="{StaticResource KpiLabel}"/>
-				</StackPanel>
-			</Border>
+            <Border Grid.Column="8" Style="{StaticResource KpiMiniCard}" Background="#2A151A">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="0" Style="{StaticResource KpiBigNumber}"/>
+                    <TextBlock Text="에러" Style="{StaticResource KpiLabel}"/>
+                </StackPanel>
+            </Border>
         </Grid>
 
-       
         <TextBlock Grid.Row="2"
-                   Text="트레이 A - 작업 중"
+                   x:Name="TxtTrayTitle"
+                   Text="트레이 - 작업 중"
                    Foreground="#E6EDF3"
                    FontSize="13"
                    FontWeight="SemiBold"
                    FontFamily="Segoe UI, Malgun Gothic"
                    Margin="2,0,0,0"/>
 
-      
         <Border Grid.Row="4"
                 VerticalAlignment="Top"
                 Background="#2A281F"
                 BorderBrush="#21262D"
                 BorderThickness="1"
-                CornerRadius="0"
                 Padding="18">
 
             <ItemsControl x:Name="TrayItems">
@@ -92,14 +87,11 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid Width="116" Height="116" Margin="5,5">
-
-                           
                             <Border Style="{StaticResource TrayCircle}"
                                     Background="{Binding StatusBrush}"/>
 
-                         
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding TrayText}"
+                                <TextBlock Text="{Binding LotText}"
                                            FontSize="11"
                                            FontWeight="SemiBold"
                                            Foreground="#111"
@@ -124,7 +116,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-
         </Border>
     </Grid>
 </Page>

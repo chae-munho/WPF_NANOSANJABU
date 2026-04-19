@@ -19,193 +19,100 @@
 
                 <Border Grid.Column="0" Style="{StaticResource LamKpiCard}" Background="#141D2B">
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                      
-                        <TextBlock Text="10" Style="{StaticResource LamKpiBigNumber}"
-                   TextAlignment="Center" HorizontalAlignment="Center"/>
-                      
-                        <TextBlock Text="총 수량" Style="{StaticResource LamKpiLabel}"
-                   TextAlignment="Center" HorizontalAlignment="Center"
-                   Margin="0,8,0,0"/>
+                        <TextBlock x:Name="TxtTotalGroupCount"
+                                   Text="0"
+                                   Style="{StaticResource LamKpiBigNumber}"
+                                   TextAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="총 수량"
+                                   Style="{StaticResource LamKpiLabel}"
+                                   TextAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"/>
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Column="2" Style="{StaticResource LamKpiCard}" Background="#0E2442">
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Text="3" Style="{StaticResource LamKpiBigNumber}"
-                   TextAlignment="Center" HorizontalAlignment="Center"/>
-                        <TextBlock Text="진행 중" Style="{StaticResource LamKpiLabel}"
-                   TextAlignment="Center" HorizontalAlignment="Center"
-                   Margin="0,8,0,0"/>
+                        <TextBlock x:Name="TxtRunningGroupCount"
+                                   Text="0"
+                                   Style="{StaticResource LamKpiBigNumber}"
+                                   TextAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="진행 중"
+                                   Style="{StaticResource LamKpiLabel}"
+                                   TextAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"/>
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Column="4" Style="{StaticResource LamKpiCard}" Background="#2A2412">
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Text="3" Style="{StaticResource LamKpiBigNumber}"
-                   TextAlignment="Center" HorizontalAlignment="Center"/>
-                        <TextBlock Text="완료" Style="{StaticResource LamKpiLabel}"
-                   TextAlignment="Center" HorizontalAlignment="Center"
-                   Margin="0,8,0,0"/>
+                        <TextBlock x:Name="TxtCompletedGroupCount"
+                                   Text="0"
+                                   Style="{StaticResource LamKpiBigNumber}"
+                                   TextAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="완료"
+                                   Style="{StaticResource LamKpiLabel}"
+                                   TextAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"/>
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Column="6" Style="{StaticResource LamKpiCard}" Background="#0C2A27">
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Text="0" Style="{StaticResource LamKpiBigNumber}"
-                   TextAlignment="Center" HorizontalAlignment="Center"/>
-                        <TextBlock Text="에러" Style="{StaticResource LamKpiLabel}"
-                   TextAlignment="Center" HorizontalAlignment="Center"
-                   Margin="0,8,0,0"/>
+                        <TextBlock Text="0"
+                                   Style="{StaticResource LamKpiBigNumber}"
+                                   TextAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="에러"
+                                   Style="{StaticResource LamKpiLabel}"
+                                   TextAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"/>
                     </StackPanel>
                 </Border>
-
-
-
             </Grid>
 
-
             <Border Background="#2A281F"
-                    CornerRadius="0"
                     Padding="26"
                     BorderBrush="#21262D"
                     BorderThickness="1">
-
                 <StackPanel>
-
                     <TextBlock Text="5개 합성 트레이"
                                Foreground="#E6EDF3"
                                FontSize="13"
                                FontFamily="Segoe UI, Malgun Gothic"
                                Margin="0,0,0,14"/>
 
-                 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="226"/>
-                            <RowDefinition Height="33"/>
-                            <RowDefinition Height="226"/>
-                        </Grid.RowDefinitions>
+                    <ItemsControl x:Name="StackGroupItemsControl">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="2" Columns="5"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="226"/>
-                            <ColumnDefinition Width="88"/>
-                            <ColumnDefinition Width="226"/>
-                            <ColumnDefinition Width="88"/>
-                            <ColumnDefinition Width="226"/>
-                            <ColumnDefinition Width="88"/>
-                            <ColumnDefinition Width="226"/>
-                            <ColumnDefinition Width="88"/>
-                            <ColumnDefinition Width="226"/>
-                        </Grid.ColumnDefinitions>
-
-                     
-
-                        <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource LamTrayCircle}" Background="#FF3B30">
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Lot 2 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
-                                <TextBlock Text="LOT A6~10" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="합성 중" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="RUN" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="12분 경과" Style="{StaticResource LamTrayText}"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Lot 4 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
-                                <TextBlock Text="LOT A16~20" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}" />
-                                <TextBlock Text="작업 없음" Style="{StaticResource LamTrayText}"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="0" Grid.Column="4" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Lot 6 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
-                                <TextBlock Text="LOT A26~30" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}" />
-                                <TextBlock Text="작업 없음" Style="{StaticResource LamTrayText}"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="0" Grid.Column="6" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Lot 8 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
-                                <TextBlock Text="LOT A36~40" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="작업 없음" Style="{StaticResource LamTrayText}"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="0" Grid.Column="8" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Lot 10 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
-                                <TextBlock Text="LOT A46~50" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}" />
-                                <TextBlock Text="작업 없음" Style="{StaticResource LamTrayText}"/>
-                            </StackPanel>
-                        </Border>
-
-                       
-
-                        <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource LamTrayCircle}" Background="#D7F04A">
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Lot 1 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
-                                <TextBlock Text="LOT A1~5" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="합성 중지" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="COMPLETE" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="총 5분" Style="{StaticResource LamTrayText}"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Lot 3 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
-                                <TextBlock Text="LOT A11~15" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="작업 없음" Style="{StaticResource LamTrayText}"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="2" Grid.Column="4" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Lot 5 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
-                                <TextBlock Text="LOT A21~25" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="작업 없음" Style="{StaticResource LamTrayText}"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="2" Grid.Column="6" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Lot 7 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
-                                <TextBlock Text="LOT A31~35" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}" />
-                                <TextBlock Text="작업 없음" Style="{StaticResource LamTrayText}"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="2" Grid.Column="8" Style="{StaticResource LamTrayCircle}" Background="#D9D9D9">
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="[ Lot 9 ]" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
-                                <TextBlock Text="LOT A41~45" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="LOT 대기중" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="IDLE" Style="{StaticResource LamTrayText}"/>
-                                <TextBlock Text="작업 없음" Style="{StaticResource LamTrayText}"/>
-                            </StackPanel>
-                        </Border>
-
-                    </Grid>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource LamTrayCircle}"
+                                        Background="{Binding StatusBrush}"
+                                        Margin="10">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding LotText}" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding RangeText}" Style="{StaticResource LamTrayText}"/>
+                                        <TextBlock Text="{Binding StatusText}" Style="{StaticResource LamTrayText}"/>
+                                        <TextBlock Text="{Binding ModeText}" Style="{StaticResource LamTrayText}"/>
+                                        <TextBlock Text="{Binding TimeText}" Style="{StaticResource LamTrayText}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
             </Border>
-
         </StackPanel>
     </Grid>
 </Page>
