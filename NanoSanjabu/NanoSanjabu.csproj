@@ -38,6 +38,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Reference Include="ActUtlTypeLib">
+	    <HintPath>libs\ActUtlTypeLib.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Update="appsettings.Development.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
