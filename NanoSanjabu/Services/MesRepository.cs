@@ -16,6 +16,13 @@ namespace NanoSanjabu.Services
             _databaseService = databaseService;
         }
 
+        private static Brush CreateFrozenBrush(string hex)
+        {
+            var brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex));
+            brush.Freeze();
+            return brush;
+        }
+
         public async Task<long> GetOrCreateActiveTrayRunAsync()
         {
             await using var connection = await _databaseService.CreateOpenConnectionAsync();
@@ -452,10 +459,10 @@ SELECT
             var summary = new DashboardSummary();
             if (await reader.ReadAsync())
             {
-                summary.ProductionCount = reader.GetInt32("production_count");
-                summary.PassRate = reader.GetDouble("pass_rate");
-                summary.DefectRate = reader.GetDouble("defect_rate");
-                summary.CompletedTrayCount = reader.GetInt32("completed_tray_count");
+                summary.ProductionCount = Convert.ToInt32(reader["production_count"]);
+                summary.PassRate = Convert.ToDouble(reader["pass_rate"]);
+                summary.DefectRate = Convert.ToDouble(reader["defect_rate"]);
+                summary.CompletedTrayCount = Convert.ToInt32(reader["completed_tray_count"]);
             }
 
             return summary;
@@ -482,10 +489,10 @@ SELECT
             var summary = new HistorySummary();
             if (await reader.ReadAsync())
             {
-                summary.TotalLotCount = reader.GetInt32("total_lot_count");
-                summary.TotalProducedUnit = reader.GetInt32("total_produced_unit");
+                summary.TotalLotCount = Convert.ToInt32(reader["total_lot_count"]);
+                summary.TotalProducedUnit = Convert.ToInt32(reader["total_produced_unit"]);
                 summary.AverageProcessMinutes = Convert.ToInt32(reader["avg_process_minutes"]);
-                summary.ReworkLotCount = reader.GetInt32("rework_lot_count");
+                summary.ReworkLotCount = Convert.ToInt32(reader["rework_lot_count"]);
             }
 
             return summary;
@@ -543,12 +550,12 @@ ORDER BY row_no ASC, col_no ASC;";
 
                 items.Add(new InputSlotState
                 {
-                    SlotNo = reader.GetInt32("slot_no"),
-                    RowNo = reader.GetInt32("row_no"),
-                    ColNo = reader.GetInt32("col_no"),
-                    LotText = $"Lot {reader.GetInt32("slot_no")}",
+                    SlotNo = Convert.ToInt32(reader["slot_no"]),
+                    RowNo = Convert.ToInt32(reader["row_no"]),
+                    ColNo = Convert.ToInt32(reader["col_no"]),
+                    LotText = $"Lot {Convert.ToInt32(reader["slot_no"])}",
                     StatusText = statusText,
-                    TimeText = $"TIME: {reader.GetInt32("elapsed_min")}m",
+                    TimeText = $"TIME: {Convert.ToInt32(reader["elapsed_min"])}m",
                     StatusBrush = brush
                 });
             }
@@ -575,9 +582,9 @@ ORDER BY group_no ASC;";
 
             while (await reader.ReadAsync())
             {
-                int groupNo = reader.GetInt32("group_no");
-                int startSlotNo = reader.GetInt32("start_slot_no");
-                int endSlotNo = reader.GetInt32("end_slot_no");
+                int groupNo = Convert.ToInt32(reader["group_no"]);
+                int startSlotNo = Convert.ToInt32(reader["start_slot_no"]);
+                int endSlotNo = Convert.ToInt32(reader["end_slot_no"]);
                 string status = reader["status"]?.ToString() ?? SlotStatus.Waiting;
 
                 (Brush brush, string statusText, string modeText) = GetGroupBrushAndText(status);
@@ -593,7 +600,7 @@ ORDER BY group_no ASC;";
                     ModeText = modeText,
                     TimeText = status == SlotStatus.Waiting
                         ? "작업 없음"
-                        : $"총 {reader.GetInt32("elapsed_min")}분",
+                        : $"총 {Convert.ToInt32(reader["elapsed_min"])}분",
                     StatusBrush = brush
                 });
             }
@@ -605,10 +612,10 @@ ORDER BY group_no ASC;";
         {
             return status switch
             {
-                SlotStatus.Running => (new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3B30")), "STATUS: RUN"),
-                SlotStatus.GlassLoaded => (new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F4C542")), "STATUS: LOAD"),
-                SlotStatus.Complete => (new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D7F04A")), "STATUS: COMPLETE"),
-                _ => (new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D9D9D9")), "STATUS: WAITING")
+                SlotStatus.Running => (CreateFrozenBrush("#FF3B30"), "STATUS: RUN"),
+                SlotStatus.GlassLoaded => (CreateFrozenBrush("#F4C542"), "STATUS: LOAD"),
+                SlotStatus.Complete => (CreateFrozenBrush("#D7F04A"), "STATUS: COMPLETE"),
+                _ => (CreateFrozenBrush("#D9D9D9"), "STATUS: WAITING")
             };
         }
 
@@ -617,15 +624,15 @@ ORDER BY group_no ASC;";
             return status switch
             {
                 SlotStatus.Running => (
-                    new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3B30")),
+                    CreateFrozenBrush("#FF3B30"),
                     "합성 중",
                     "RUN"),
                 SlotStatus.Complete => (
-                    new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D7F04A")),
+                    CreateFrozenBrush("#D7F04A"),
                     "합성 완료",
                     "COMPLETE"),
                 _ => (
-                    new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D9D9D9")),
+                    CreateFrozenBrush("#D9D9D9"),
                     "LOT 대기중",
                     "IDLE")
             };
