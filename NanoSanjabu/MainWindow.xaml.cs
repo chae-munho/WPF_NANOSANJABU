@@ -15,10 +15,6 @@ namespace NanoSanjabu
         {
             InitializeComponent();
 
-            AddHandler(UIElement.PreviewMouseLeftButtonDownEvent,
-                new MouseButtonEventHandler(AnyWhereDrag),
-                true);
-
             Loaded += MainWindow_Loaded;
             NavigateToDashboard();
         }
@@ -80,13 +76,13 @@ namespace NanoSanjabu
             }
         }
 
-        private void AnyWhereDrag(object sender, MouseButtonEventArgs e)
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.OriginalSource is DependencyObject d)
             {
                 while (d != null)
                 {
-                    if (d is ButtonBase || d is TextBoxBase || d is ScrollBar)
+                    if (d is ButtonBase || d is TextBoxBase)
                     {
                         return;
                     }

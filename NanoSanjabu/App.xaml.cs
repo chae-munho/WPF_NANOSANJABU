@@ -12,6 +12,7 @@ namespace NanoSanjabu
             await AppServices.InitializeAsync();
 
             var mainWindow = new MainWindow();
+            MainWindow = mainWindow;
             mainWindow.Show();
         }
 

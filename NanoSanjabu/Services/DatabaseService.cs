@@ -7,7 +7,7 @@ namespace NanoSanjabu.Services
     public class DatabaseService
     {
         private readonly string _connectionString =
-            "Server=localhost;Port=3306;Database=testdb;Uid=root;Pwd=1234;Charset=utf8mb4;";
+            "Server=localhost;Port=3306;Database=testdb;Uid=root;Pwd=rootpass;Charset=utf8mb4;";
 
         public string ConnectionString => _connectionString;
 
