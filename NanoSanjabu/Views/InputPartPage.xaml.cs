@@ -40,10 +40,18 @@ namespace NanoSanjabu.Views
         private void Render()
         {
             var snapshot = AppServices.MesRuntimeService.CurrentSnapshot;
-            var items = snapshot.InputSlots.OrderBy(x => x.ColNo).ThenBy(x => x.RowNo).ToList();
+
+            // 화면 표시 순서:
+            // 상단 41~50, 하단 1~10
+            var items = snapshot.InputSlots
+                .OrderBy(x => x.RowNo)
+                .ThenBy(x => x.ColNo)
+                .ToList();
 
             TrayItems.ItemsSource = items;
-            TxtTrayTitle.Text = string.IsNullOrWhiteSpace(snapshot.CurrentTrayLotNo) ? "대기 중" : $"{snapshot.CurrentTrayLotNo} - 작업 중";
+            TxtTrayTitle.Text = string.IsNullOrWhiteSpace(snapshot.CurrentTrayLotNo)
+                ? "대기 중"
+                : $"{snapshot.CurrentTrayLotNo} - 작업 중";
 
             TxtTotalCount.Text = items.Count.ToString();
             TxtWaitingCount.Text = items.Count(x => x.StatusText.Contains("WAIT")).ToString();

@@ -10,11 +10,14 @@ namespace NanoSanjabu.Services
         {
             var items = new List<InputSlotState>();
 
-            for (int col = 1; col <= 10; col++)
+            // row = 1 이 화면 상단, row = 5 가 화면 하단
+            // 실제 번호는 좌하단 Lot1 이므로:
+            // slotNo = ((5 - row) * 10) + col
+            for (int row = 1; row <= 5; row++)
             {
-                for (int row = 1; row <= 5; row++)
+                for (int col = 1; col <= 10; col++)
                 {
-                    int slotNo = ((col - 1) * 5) + (6 - row);
+                    int slotNo = ((5 - row) * 10) + col;
 
                     items.Add(new InputSlotState
                     {

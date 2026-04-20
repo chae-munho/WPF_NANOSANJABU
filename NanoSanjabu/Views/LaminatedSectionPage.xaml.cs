@@ -33,13 +33,18 @@ namespace NanoSanjabu.Views
         private void Render()
         {
             var snapshot = AppServices.MesRuntimeService.CurrentSnapshot;
-            var items = snapshot.StackGroups.OrderBy(x => x.GroupNo).ToList();
+
+            // 화면 표시 순서:
+            // 상단 6~10, 하단 1~5
+            var items = snapshot.StackGroups
+                .OrderBy(x => x.GroupNo <= 5 ? x.GroupNo + 5 : x.GroupNo - 5)
+                .ToList();
 
             StackGroupItemsControl.ItemsSource = items;
 
-            TxtTotalGroupCount.Text = items.Count.ToString();
-            TxtRunningGroupCount.Text = items.Count(x => x.ModeText == "RUN").ToString();
-            TxtCompletedGroupCount.Text = items.Count(x => x.ModeText == "COMPLETE").ToString();
+            TxtTotalGroupCount.Text = snapshot.StackGroups.Count.ToString();
+            TxtRunningGroupCount.Text = snapshot.StackGroups.Count(x => x.ModeText == "RUN").ToString();
+            TxtCompletedGroupCount.Text = snapshot.StackGroups.Count(x => x.ModeText == "COMPLETE").ToString();
         }
     }
 }

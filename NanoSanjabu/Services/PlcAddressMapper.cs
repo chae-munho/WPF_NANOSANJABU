@@ -21,9 +21,9 @@
             colNo = loaderX;
             rowNo = loaderY;
 
-            // 기존 UI 배치 기준
-            // 표시 슬롯 번호 = (열-1)*5 + (6-행)
-            slotNo = ((colNo - 1) * 5) + (6 - rowNo);
+            // 실제 배치:
+            // 좌하단 Lot1, 우하단 Lot10, 그 윗줄 Lot11
+            slotNo = ((5 - rowNo) * 10) + colNo;
             return true;
         }
 

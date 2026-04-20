@@ -12,55 +12,82 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <!-- 상단 KPI 영역: 기존 Grid 방식 유지 -->
+        <Grid Grid.Row="0"
+              HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Style="{StaticResource KpiMiniCard}" Background="#121822">
+            <Border Grid.Column="0"
+                    Style="{StaticResource KpiMiniCard}"
+                    Background="#121822">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock x:Name="TxtTotalCount" Text="50" Style="{StaticResource KpiBigNumber}"/>
-                    <TextBlock Text="총 수량" Style="{StaticResource KpiLabel}"/>
+                    <TextBlock x:Name="TxtTotalCount"
+                               Text="50"
+                               Style="{StaticResource KpiBigNumber}"/>
+                    <TextBlock Text="총 수량"
+                               Style="{StaticResource KpiLabel}"/>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="2" Style="{StaticResource KpiMiniCard}" Background="#102237">
+            <Border Grid.Column="2"
+                    Style="{StaticResource KpiMiniCard}"
+                    Background="#102237">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock x:Name="TxtWaitingCount" Text="0" Style="{StaticResource KpiBigNumber}"/>
-                    <TextBlock Text="대기" Style="{StaticResource KpiLabel}"/>
+                    <TextBlock x:Name="TxtWaitingCount"
+                               Text="0"
+                               Style="{StaticResource KpiBigNumber}"/>
+                    <TextBlock Text="대기"
+                               Style="{StaticResource KpiLabel}"/>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="4" Style="{StaticResource KpiMiniCard}" Background="#2A271E">
+            <Border Grid.Column="4"
+                    Style="{StaticResource KpiMiniCard}"
+                    Background="#2A271E">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock x:Name="TxtRunningCount" Text="0" Style="{StaticResource KpiBigNumber}"/>
-                    <TextBlock Text="진행 중" Style="{StaticResource KpiLabel}"/>
+                    <TextBlock x:Name="TxtRunningCount"
+                               Text="0"
+                               Style="{StaticResource KpiBigNumber}"/>
+                    <TextBlock Text="진행 중"
+                               Style="{StaticResource KpiLabel}"/>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="6" Style="{StaticResource KpiMiniCard}" Background="#0C2B26">
+            <Border Grid.Column="6"
+                    Style="{StaticResource KpiMiniCard}"
+                    Background="#0C2B26">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock x:Name="TxtCompleteCount" Text="0" Style="{StaticResource KpiBigNumber}"/>
-                    <TextBlock Text="완료" Style="{StaticResource KpiLabel}"/>
+                    <TextBlock x:Name="TxtCompleteCount"
+                               Text="0"
+                               Style="{StaticResource KpiBigNumber}"/>
+                    <TextBlock Text="완료"
+                               Style="{StaticResource KpiLabel}"/>
                 </StackPanel>
             </Border>
 
-            <Border Grid.Column="8" Style="{StaticResource KpiMiniCard}" Background="#2A151A">
+            <Border Grid.Column="8"
+                    Style="{StaticResource KpiMiniCard}"
+                    Background="#2A151A">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="0" Style="{StaticResource KpiBigNumber}"/>
-                    <TextBlock Text="에러" Style="{StaticResource KpiLabel}"/>
+                    <TextBlock Text="0"
+                               Style="{StaticResource KpiBigNumber}"/>
+                    <TextBlock Text="에러"
+                               Style="{StaticResource KpiLabel}"/>
                 </StackPanel>
             </Border>
         </Grid>
 
+        <!-- 타이틀 -->
         <TextBlock Grid.Row="2"
                    x:Name="TxtTrayTitle"
                    Text="트레이 - 작업 중"
@@ -70,11 +97,13 @@
                    FontFamily="Segoe UI, Malgun Gothic"
                    Margin="2,0,0,0"/>
 
+        <!-- 슬롯 영역 -->
         <Border Grid.Row="4"
                 VerticalAlignment="Top"
                 Background="#2A281F"
                 BorderBrush="#21262D"
                 BorderThickness="1"
+                CornerRadius="0"
                 Padding="18">
 
             <ItemsControl x:Name="TrayItems">
@@ -86,11 +115,15 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid Width="116" Height="116" Margin="5,5">
+                        <Grid Width="116"
+                              Height="116"
+                              Margin="5">
+
                             <Border Style="{StaticResource TrayCircle}"
                                     Background="{Binding StatusBrush}"/>
 
-                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <StackPanel VerticalAlignment="Center"
+                                        HorizontalAlignment="Center">
                                 <TextBlock Text="{Binding LotText}"
                                            FontSize="11"
                                            FontWeight="SemiBold"
@@ -116,6 +149,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+
         </Border>
     </Grid>
 </Page>

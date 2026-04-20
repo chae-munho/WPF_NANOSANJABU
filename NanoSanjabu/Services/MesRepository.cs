@@ -55,11 +55,13 @@ SELECT LAST_INSERT_ID();";
                 trayRunId = Convert.ToInt64(await cmd.ExecuteScalarAsync());
             }
 
-            for (int col = 1; col <= 10; col++)
+            // row = 1 상단, row = 5 하단
+            // 실제 lot 번호는 좌하단부터 시작
+            for (int row = 1; row <= 5; row++)
             {
-                for (int row = 1; row <= 5; row++)
+                for (int col = 1; col <= 10; col++)
                 {
-                    int slotNo = ((col - 1) * 5) + (6 - row);
+                    int slotNo = ((5 - row) * 10) + col;
                     string glassLotNo = $"{trayLotNo}-{slotNo:00}";
 
                     const string insertSlotSql = @"
@@ -526,7 +528,7 @@ SELECT slot_no, row_no, col_no, status,
        TIMESTAMPDIFF(MINUTE, COALESCE(loading_at, created_at), NOW()) AS elapsed_min
 FROM tray_slot
 WHERE tray_run_id = @trayRunId
-ORDER BY col_no ASC, row_no ASC;";
+ORDER BY row_no ASC, col_no ASC;";
 
             await using var cmd = new MySqlCommand(sql, connection);
             cmd.Parameters.AddWithValue("@trayRunId", trayRunId);
