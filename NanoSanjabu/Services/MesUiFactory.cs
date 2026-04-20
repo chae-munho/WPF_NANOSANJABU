@@ -6,6 +6,13 @@ namespace NanoSanjabu.Services
 {
     public static class MesUiFactory
     {
+        private static Brush CreateFrozenBrush(string hex)
+        {
+            var brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex));
+            brush.Freeze();
+            return brush;
+        }
+
         public static List<InputSlotState> CreateDefaultInputSlots()
         {
             var items = new List<InputSlotState>();
@@ -27,7 +34,7 @@ namespace NanoSanjabu.Services
                         LotText = $"Lot {slotNo}",
                         StatusText = "STATUS: WAITING",
                         TimeText = "TIME: 0m",
-                        StatusBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D9D9D9"))
+                        StatusBrush = CreateFrozenBrush("#D9D9D9")
                     });
                 }
             }
@@ -54,7 +61,7 @@ namespace NanoSanjabu.Services
                     StatusText = "LOT 대기중",
                     ModeText = "IDLE",
                     TimeText = "작업 없음",
-                    StatusBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D9D9D9"))
+                    StatusBrush = CreateFrozenBrush("#D9D9D9")
                 });
             }
 
