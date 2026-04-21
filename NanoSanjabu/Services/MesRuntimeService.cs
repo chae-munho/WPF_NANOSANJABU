@@ -1,7 +1,7 @@
 ﻿using NanoSanjabu.Models;
 using System;
 using System.Threading.Tasks;
-using Timer = System.Timers.Timer; 
+using Timer = System.Timers.Timer;
 
 namespace NanoSanjabu.Services
 {
@@ -65,23 +65,17 @@ namespace NanoSanjabu.Services
         public async Task StartPlcAsync()
         {
             if (_plcService == null)
-            {
                 throw new InvalidOperationException("PLC 서비스가 설정되지 않았습니다.");
-            }
 
             if (!_plcService.IsConnected)
             {
                 bool connected = _plcService.Connect(out int errorCode);
                 if (!connected)
-                {
                     throw new InvalidOperationException($"PLC 연결 실패: ErrorCode={errorCode}");
-                }
             }
 
             if (CurrentTrayRunId == 0)
-            {
                 CurrentTrayRunId = await _repository.GetOrCreateActiveTrayRunAsync();
-            }
 
             _timer.Start();
         }
@@ -89,14 +83,10 @@ namespace NanoSanjabu.Services
         private async Task OnTickAsync()
         {
             if (_isProcessing)
-            {
                 return;
-            }
 
             if (_plcService == null || !_plcService.IsConnected)
-            {
                 return;
-            }
 
             _isProcessing = true;
 
@@ -119,28 +109,30 @@ namespace NanoSanjabu.Services
 
         private async Task ProcessPlcAsync(PlcData current)
         {
-            if (PlcAddressMapper.TryGetInputSlot(
-                current.PositionIndex[0],
-                current.PositionIndex[1],
-                out _,
-                out _,
-                out int currentSlotNo))
+            short loaderX = current.PositionIndex[0]; // D60
+            short loaderY = current.PositionIndex[1]; // D61
+
+            // 1) 투입부 현재 작업 위치 -> LOADING
+            if (PlcAddressMapper.TryGetInputSlot(loaderX, loaderY, out _, out _, out int currentSlotNo))
             {
-                await _repository.MarkSlotRunningAsync(CurrentTrayRunId, currentSlotNo);
+                await _repository.MarkSlotLoadingAsync(CurrentTrayRunId, currentSlotNo);
             }
 
+            // 2) Glass 안착 완료
             if (IsRisingEdge(_previousData?.M858_GlassLoaded, current.M858_GlassLoaded) &&
-                PlcAddressMapper.TryGetInputSlot(current.PositionIndex[0], current.PositionIndex[1], out _, out _, out int glassSlotNo))
+                PlcAddressMapper.TryGetInputSlot(loaderX, loaderY, out _, out _, out int glassSlotNo))
             {
                 await _repository.MarkGlassLoadedAsync(CurrentTrayRunId, glassSlotNo);
             }
 
+            // 3) Nano 완료 -> COMPLETE
             if (IsRisingEdge(_previousData?.M863_NanoDone, current.M863_NanoDone) &&
-                PlcAddressMapper.TryGetInputSlot(current.PositionIndex[0], current.PositionIndex[1], out _, out _, out int nanoSlotNo))
+                PlcAddressMapper.TryGetInputSlot(loaderX, loaderY, out _, out _, out int nanoSlotNo))
             {
                 await _repository.MarkNanoDoneAsync(CurrentTrayRunId, nanoSlotNo);
             }
 
+            // 4) Dry Zone
             if (IsRisingEdge(_previousData?.L1_DryStartUpper, current.L1_DryStartUpper))
             {
                 await _repository.MarkDryStartedAsync(CurrentTrayRunId, "UPPER_DRY");
@@ -161,14 +153,37 @@ namespace NanoSanjabu.Services
                 await _repository.MarkDryCompletedAsync(CurrentTrayRunId, "LOWER_DRY");
             }
 
+            // 5) 적층 진행 그룹
             int currentGroupNo = PlcAddressMapper.GetCurrentStackGroup(current.D26_StackOutCount, current.D20_StackInput);
-            await _repository.MarkStackGroupRunningAsync(CurrentTrayRunId, currentGroupNo);
 
+            if (current.D20_StackInput > 0)
+            {
+                await _repository.MarkStackGroupLoadingAsync(CurrentTrayRunId, currentGroupNo);
+            }
+
+            // 6) 적층 source slot 수집
+            // D65 = Transfer X(열 1~10), D66 = Unloader X(행 1~5), D67 = Unloader Y(Tray 작업 위치=1)
+            short transferX = current.PositionIndex[5]; // D65
+            short unloaderX = current.PositionIndex[6]; // D66
+            short unloaderY = current.PositionIndex[7]; // D67
+
+            if (current.D20_StackInput >= 1 && current.D20_StackInput <= 5 &&
+                PlcAddressMapper.TryGetStackPickSlot(transferX, unloaderX, unloaderY, out _, out _, out int pickedSlotNo))
+            {
+                await _repository.UpsertStackGroupItemAsync(
+                    CurrentTrayRunId,
+                    currentGroupNo,
+                    pickedSlotNo,
+                    current.D20_StackInput);
+            }
+
+            // 7) UV 시작
             if (IsRisingEdge(_previousData?.M922_UVRun, current.M922_UVRun))
             {
                 await _repository.MarkUvRunningAsync(CurrentTrayRunId, currentGroupNo);
             }
 
+            // 8) 적층 완료
             if (IsRisingEdge(_previousData?.M937_StackOut, current.M937_StackOut))
             {
                 int completedGroupNo = current.D26_StackOutCount;
@@ -177,7 +192,16 @@ namespace NanoSanjabu.Services
                     completedGroupNo = currentGroupNo;
                 }
 
-                await _repository.MarkStackGroupCompletedAsync(CurrentTrayRunId, completedGroupNo);
+                // D66=Unloader X, D67=Unloader Y
+                int outRowNo;
+                int outColNo;
+
+                if (!PlcAddressMapper.TryGetStackOutPosition(unloaderX, unloaderY, out outRowNo, out outColNo))
+                {
+                    PlcAddressMapper.GetDefaultStackOutPosition(completedGroupNo, out outRowNo, out outColNo);
+                }
+
+                await _repository.MarkStackGroupCompletedAsync(CurrentTrayRunId, completedGroupNo, outRowNo, outColNo);
 
                 bool trayCompleted = await _repository.CompleteTrayIfFinishedAsync(CurrentTrayRunId);
                 if (trayCompleted)
@@ -186,6 +210,7 @@ namespace NanoSanjabu.Services
                 }
             }
 
+            // 9) 알람
             bool d0Changed = _previousData == null || _previousData.D0_Error != current.D0_Error;
             if (d0Changed)
             {

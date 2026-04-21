@@ -1,4 +1,5 @@
-﻿using NanoSanjabu.Services;
+﻿using NanoSanjabu.Models;
+using NanoSanjabu.Services;
 using System.Linq;
 using System.Windows.Controls;
 
@@ -41,22 +42,21 @@ namespace NanoSanjabu.Views
         {
             var snapshot = AppServices.MesRuntimeService.CurrentSnapshot;
 
-            // 화면 표시 순서:
-            // 상단 41~50, 하단 1~10
             var items = snapshot.InputSlots
-                .OrderBy(x => x.RowNo)
+                .OrderByDescending(x => x.RowNo)
                 .ThenBy(x => x.ColNo)
                 .ToList();
 
             TrayItems.ItemsSource = items;
+
             TxtTrayTitle.Text = string.IsNullOrWhiteSpace(snapshot.CurrentTrayLotNo)
                 ? "대기 중"
                 : $"{snapshot.CurrentTrayLotNo} - 작업 중";
 
             TxtTotalCount.Text = items.Count.ToString();
-            TxtWaitingCount.Text = items.Count(x => x.StatusText.Contains("WAIT")).ToString();
-            TxtRunningCount.Text = items.Count(x => x.StatusText.Contains("RUN") || x.StatusText.Contains("LOAD")).ToString();
-            TxtCompleteCount.Text = items.Count(x => x.StatusText.Contains("COMPLETE")).ToString();
+            TxtWaitingCount.Text = items.Count(x => x.StatusCode == SlotStatus.Waiting).ToString();
+            TxtRunningCount.Text = items.Count(x => x.StatusCode == SlotStatus.Loading).ToString();
+            TxtCompleteCount.Text = items.Count(x => x.StatusCode == SlotStatus.Complete).ToString();
         }
     }
 }

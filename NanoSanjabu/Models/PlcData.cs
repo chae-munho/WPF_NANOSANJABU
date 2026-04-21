@@ -37,7 +37,10 @@
         public bool M922_UVRun { get; set; }
         public bool M937_StackOut { get; set; }
 
+        // D60 ~ D69
         public short[] PositionIndex { get; set; } = new short[10];
+
+        // D100 ~ D118
         public short[] PositionMM { get; set; } = new short[10];
     }
 }

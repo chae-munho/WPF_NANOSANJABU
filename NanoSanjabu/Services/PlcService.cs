@@ -41,9 +41,7 @@ namespace NanoSanjabu.Services
         public void Disconnect()
         {
             if (!_isConnected)
-            {
                 return;
-            }
 
             try
             {
@@ -64,9 +62,7 @@ namespace NanoSanjabu.Services
             int value;
             int ret = _plc.GetDevice(address, out value);
             if (ret != 0)
-            {
                 throw new PlcException($"GetDevice 실패: {address}", ret);
-            }
 
             return value != 0;
         }
@@ -78,9 +74,7 @@ namespace NanoSanjabu.Services
             int value;
             int ret = _plc.GetDevice(address, out value);
             if (ret != 0)
-            {
                 throw new PlcException($"GetDevice 실패: {address}", ret);
-            }
 
             return unchecked((short)value);
         }
@@ -144,9 +138,7 @@ namespace NanoSanjabu.Services
         private void EnsureConnected()
         {
             if (!_isConnected)
-            {
                 throw new InvalidOperationException("PLC가 연결되어 있지 않습니다.");
-            }
         }
 
         public void Dispose()

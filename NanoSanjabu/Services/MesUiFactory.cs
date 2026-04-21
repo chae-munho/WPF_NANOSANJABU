@@ -17,9 +17,6 @@ namespace NanoSanjabu.Services
         {
             var items = new List<InputSlotState>();
 
-            // row = 1 이 화면 상단, row = 5 가 화면 하단
-            // 실제 번호는 좌하단 Lot1 이므로:
-            // slotNo = ((5 - row) * 10) + col
             for (int row = 1; row <= 5; row++)
             {
                 for (int col = 1; col <= 10; col++)
@@ -31,9 +28,10 @@ namespace NanoSanjabu.Services
                         SlotNo = slotNo,
                         RowNo = row,
                         ColNo = col,
-                        LotText = $"Lot {slotNo}",
-                        StatusText = "STATUS: WAITING",
-                        TimeText = "TIME: 0m",
+                        StatusCode = SlotStatus.Waiting,
+                        LotText = $"{row}행 {col}열",
+                        StatusText = "WAITING",
+                        TimeText = "0s",
                         StatusBrush = CreateFrozenBrush("#D9D9D9")
                     });
                 }
@@ -51,16 +49,21 @@ namespace NanoSanjabu.Services
                 int startSlotNo = ((groupNo - 1) * 5) + 1;
                 int endSlotNo = groupNo * 5;
 
+                PlcAddressMapper.GetDefaultStackOutPosition(groupNo, out int rowNo, out int colNo);
+
                 items.Add(new StackGroupState
                 {
                     GroupNo = groupNo,
                     StartSlotNo = startSlotNo,
                     EndSlotNo = endSlotNo,
-                    LotText = $"[ Lot {groupNo} ]",
-                    RangeText = $"LOT A{startSlotNo}~{endSlotNo}",
-                    StatusText = "LOT 대기중",
-                    ModeText = "IDLE",
-                    TimeText = "작업 없음",
+                    RowNo = rowNo,
+                    ColNo = colNo,
+                    StatusCode = SlotStatus.Waiting,
+                    LotText = $"{rowNo}행 {colNo}열",
+                    RangeText = $"LOT {startSlotNo}~{endSlotNo}",
+                    StatusText = "WAITING",
+                    ModeText = $"G{groupNo:00}",
+                    TimeText = "0s",
                     StatusBrush = CreateFrozenBrush("#D9D9D9")
                 });
             }

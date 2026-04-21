@@ -1,4 +1,5 @@
-﻿using NanoSanjabu.Services;
+﻿using NanoSanjabu.Models;
+using NanoSanjabu.Services;
 using System.Linq;
 using System.Windows.Controls;
 
@@ -34,17 +35,17 @@ namespace NanoSanjabu.Views
         {
             var snapshot = AppServices.MesRuntimeService.CurrentSnapshot;
 
-            // 화면 표시 순서:
-            // 상단 6~10, 하단 1~5
+            // 아래줄이 1행, 위줄이 2행
             var items = snapshot.StackGroups
-                .OrderBy(x => x.GroupNo <= 5 ? x.GroupNo + 5 : x.GroupNo - 5)
+                .OrderByDescending(x => x.RowNo)
+                .ThenBy(x => x.ColNo)
                 .ToList();
 
             StackGroupItemsControl.ItemsSource = items;
 
             TxtTotalGroupCount.Text = snapshot.StackGroups.Count.ToString();
-            TxtRunningGroupCount.Text = snapshot.StackGroups.Count(x => x.ModeText == "RUN").ToString();
-            TxtCompletedGroupCount.Text = snapshot.StackGroups.Count(x => x.ModeText == "COMPLETE").ToString();
+            TxtRunningGroupCount.Text = snapshot.StackGroups.Count(x => x.StatusCode == SlotStatus.Loading).ToString();
+            TxtCompletedGroupCount.Text = snapshot.StackGroups.Count(x => x.StatusCode == SlotStatus.Complete).ToString();
         }
     }
 }

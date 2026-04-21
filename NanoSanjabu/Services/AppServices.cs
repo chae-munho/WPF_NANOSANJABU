@@ -13,8 +13,6 @@ namespace NanoSanjabu.Services
         {
             DatabaseService = new DatabaseService();
             MesRepository = new MesRepository(DatabaseService);
-
-            // 생성자 1개 인자만 받음
             MesRuntimeService = new MesRuntimeService(MesRepository);
 
             return Task.CompletedTask;

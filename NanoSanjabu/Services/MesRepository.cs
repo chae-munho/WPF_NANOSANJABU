@@ -62,13 +62,12 @@ SELECT LAST_INSERT_ID();";
                 trayRunId = Convert.ToInt64(await cmd.ExecuteScalarAsync());
             }
 
-            // row = 1 상단, row = 5 하단
-            // 실제 lot 번호는 좌하단부터 시작
+            // row 1 = 하단, row 5 = 상단
             for (int row = 1; row <= 5; row++)
             {
                 for (int col = 1; col <= 10; col++)
                 {
-                    int slotNo = ((5 - row) * 10) + col;
+                    int slotNo = ((row - 1) * 10) + col;
                     string glassLotNo = $"{trayLotNo}-{slotNo:00}";
 
                     const string insertSlotSql = @"
@@ -87,23 +86,41 @@ VALUES (@trayRunId, @slotNo, @rowNo, @colNo, @glassLotNo, 'WAITING');";
 
             for (int groupNo = 1; groupNo <= 10; groupNo++)
             {
-                int startSlotNo = ((groupNo - 1) * 5) + 1;
-                int endSlotNo = groupNo * 5;
-                string groupLotNo = $"{trayLotNo}-G{groupNo:00}";
+                PlcAddressMapper.GetDefaultStackOutPosition(groupNo, out int rowNo, out int colNo);
 
                 const string insertGroupSql = @"
-INSERT INTO stack_group (tray_run_id, group_no, start_slot_no, end_slot_no, group_lot_no, status)
-VALUES (@trayRunId, @groupNo, @startSlotNo, @endSlotNo, @groupLotNo, 'WAITING');";
+INSERT INTO stack_group
+(
+    tray_run_id,
+    group_no,
+    start_slot_no,
+    end_slot_no,
+    group_lot_no,
+    status,
+    out_row_no,
+    out_col_no
+)
+VALUES
+(
+    @trayRunId,
+    @groupNo,
+    0,
+    0,
+    NULL,
+    'WAITING',
+    @outRowNo,
+    @outColNo
+);";
 
                 await using var groupCmd = new MySqlCommand(insertGroupSql, connection);
                 groupCmd.Parameters.AddWithValue("@trayRunId", trayRunId);
                 groupCmd.Parameters.AddWithValue("@groupNo", groupNo);
-                groupCmd.Parameters.AddWithValue("@startSlotNo", startSlotNo);
-                groupCmd.Parameters.AddWithValue("@endSlotNo", endSlotNo);
-                groupCmd.Parameters.AddWithValue("@groupLotNo", groupLotNo);
+                groupCmd.Parameters.AddWithValue("@outRowNo", rowNo);
+                groupCmd.Parameters.AddWithValue("@outColNo", colNo);
                 await groupCmd.ExecuteNonQueryAsync();
             }
 
+            await InsertEventAsync(trayRunId, null, null, "TRAY_START", null, null, $"{trayLotNo} 시작");
             return trayRunId;
         }
 
@@ -119,14 +136,14 @@ VALUES (@trayRunId, @groupNo, @startSlotNo, @endSlotNo, @groupLotNo, 'WAITING');
             return result?.ToString() ?? "";
         }
 
-        public async Task MarkSlotRunningAsync(long trayRunId, int slotNo)
+        public async Task MarkSlotLoadingAsync(long trayRunId, int slotNo)
         {
             await using var connection = await _databaseService.CreateOpenConnectionAsync();
 
             const string sql = @"
 UPDATE tray_slot
 SET status = CASE
-    WHEN status = 'WAITING' THEN 'RUNNING'
+    WHEN status = 'WAITING' THEN 'LOADING'
     ELSE status
 END,
 updated_at = NOW()
@@ -145,8 +162,8 @@ WHERE tray_run_id = @trayRunId
 
             const string sql = @"
 UPDATE tray_slot
-SET status = 'GLASS_LOADED',
-    loading_at = NOW(),
+SET status = 'LOADING',
+    loading_at = IFNULL(loading_at, NOW()),
     updated_at = NOW()
 WHERE tray_run_id = @trayRunId
   AND slot_no = @slotNo;";
@@ -155,6 +172,25 @@ WHERE tray_run_id = @trayRunId
             cmd.Parameters.AddWithValue("@trayRunId", trayRunId);
             cmd.Parameters.AddWithValue("@slotNo", slotNo);
             await cmd.ExecuteNonQueryAsync();
+
+            const string updateTraySql = @"
+UPDATE tray_run
+SET loading_completed_at = CASE
+        WHEN (
+            SELECT COUNT(*)
+            FROM tray_slot
+            WHERE tray_run_id = @trayRunId
+              AND loading_at IS NOT NULL
+        ) >= 50
+        THEN IFNULL(loading_completed_at, NOW())
+        ELSE loading_completed_at
+    END,
+    updated_at = NOW()
+WHERE id = @trayRunId;";
+
+            await using var trayCmd = new MySqlCommand(updateTraySql, connection);
+            trayCmd.Parameters.AddWithValue("@trayRunId", trayRunId);
+            await trayCmd.ExecuteNonQueryAsync();
 
             await InsertEventAsync(trayRunId, slotNo, null, "GLASS_LOADED", "M858", "ON", $"슬롯 {slotNo} Glass 안착 완료");
         }
@@ -179,12 +215,22 @@ WHERE tray_run_id = @trayRunId
             const string updateRunSql = @"
 UPDATE tray_run
 SET completed_slots = (
-    SELECT COUNT(*)
-    FROM tray_slot
-    WHERE tray_run_id = @trayRunId
-      AND status = 'COMPLETE'
-),
-updated_at = NOW()
+        SELECT COUNT(*)
+        FROM tray_slot
+        WHERE tray_run_id = @trayRunId
+          AND status = 'COMPLETE'
+    ),
+    nano_completed_at = CASE
+        WHEN (
+            SELECT COUNT(*)
+            FROM tray_slot
+            WHERE tray_run_id = @trayRunId
+              AND status = 'COMPLETE'
+        ) >= 50
+        THEN IFNULL(nano_completed_at, NOW())
+        ELSE nano_completed_at
+    END,
+    updated_at = NOW()
 WHERE id = @trayRunId;";
 
             await using var updateRunCmd = new MySqlCommand(updateRunSql, connection);
@@ -198,9 +244,15 @@ WHERE id = @trayRunId;";
         {
             await using var connection = await _databaseService.CreateOpenConnectionAsync();
 
-            const string sql = @"
+            string sql = zone == "UPPER_DRY"
+                ? @"
 UPDATE tray_run
-SET dry_started_at = IFNULL(dry_started_at, NOW()),
+SET upper_dry_started_at = IFNULL(upper_dry_started_at, NOW()),
+    updated_at = NOW()
+WHERE id = @trayRunId;"
+                : @"
+UPDATE tray_run
+SET lower_dry_started_at = IFNULL(lower_dry_started_at, NOW()),
     updated_at = NOW()
 WHERE id = @trayRunId;";
 
@@ -215,9 +267,15 @@ WHERE id = @trayRunId;";
         {
             await using var connection = await _databaseService.CreateOpenConnectionAsync();
 
-            const string sql = @"
+            string sql = zone == "UPPER_DRY"
+                ? @"
 UPDATE tray_run
-SET dry_completed_at = NOW(),
+SET upper_dry_completed_at = NOW(),
+    updated_at = NOW()
+WHERE id = @trayRunId;"
+                : @"
+UPDATE tray_run
+SET lower_dry_completed_at = NOW(),
     updated_at = NOW()
 WHERE id = @trayRunId;";
 
@@ -228,18 +286,18 @@ WHERE id = @trayRunId;";
             await InsertEventAsync(trayRunId, null, null, "DRY_COMPLETE", zone, "ON", $"{zone} 건조 완료");
         }
 
-        public async Task MarkStackGroupRunningAsync(long trayRunId, int groupNo)
+        public async Task MarkStackGroupLoadingAsync(long trayRunId, int groupNo)
         {
             await using var connection = await _databaseService.CreateOpenConnectionAsync();
 
             const string sql = @"
 UPDATE stack_group
 SET status = CASE
-    WHEN status = 'WAITING' THEN 'RUNNING'
-    ELSE status
-END,
-stacking_started_at = IFNULL(stacking_started_at, NOW()),
-updated_at = NOW()
+        WHEN status = 'WAITING' THEN 'LOADING'
+        ELSE status
+    END,
+    stacking_started_at = IFNULL(stacking_started_at, NOW()),
+    updated_at = NOW()
 WHERE tray_run_id = @trayRunId
   AND group_no = @groupNo;";
 
@@ -247,6 +305,72 @@ WHERE tray_run_id = @trayRunId
             cmd.Parameters.AddWithValue("@trayRunId", trayRunId);
             cmd.Parameters.AddWithValue("@groupNo", groupNo);
             await cmd.ExecuteNonQueryAsync();
+
+            const string runSql = @"
+UPDATE tray_run
+SET stacking_started_at = IFNULL(stacking_started_at, NOW()),
+    updated_at = NOW()
+WHERE id = @trayRunId;";
+
+            await using var runCmd = new MySqlCommand(runSql, connection);
+            runCmd.Parameters.AddWithValue("@trayRunId", trayRunId);
+            await runCmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpsertStackGroupItemAsync(long trayRunId, int groupNo, int slotNo, int stackOrder)
+        {
+            await using var connection = await _databaseService.CreateOpenConnectionAsync();
+
+            const string itemSql = @"
+INSERT INTO stack_group_item (tray_run_id, group_no, slot_no, stack_order)
+SELECT @trayRunId, @groupNo, @slotNo, @stackOrder
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM stack_group_item
+    WHERE tray_run_id = @trayRunId
+      AND group_no = @groupNo
+      AND stack_order = @stackOrder
+);";
+
+            await using (var cmd = new MySqlCommand(itemSql, connection))
+            {
+                cmd.Parameters.AddWithValue("@trayRunId", trayRunId);
+                cmd.Parameters.AddWithValue("@groupNo", groupNo);
+                cmd.Parameters.AddWithValue("@slotNo", slotNo);
+                cmd.Parameters.AddWithValue("@stackOrder", stackOrder);
+                await cmd.ExecuteNonQueryAsync();
+            }
+
+            const string updateGroupSql = @"
+UPDATE stack_group
+SET start_slot_no = COALESCE(
+        (
+            SELECT MIN(slot_no)
+            FROM stack_group_item
+            WHERE tray_run_id = @trayRunId
+              AND group_no = @groupNo
+        ),
+        start_slot_no
+    ),
+    end_slot_no = COALESCE(
+        (
+            SELECT MAX(slot_no)
+            FROM stack_group_item
+            WHERE tray_run_id = @trayRunId
+              AND group_no = @groupNo
+        ),
+        end_slot_no
+    ),
+    updated_at = NOW()
+WHERE tray_run_id = @trayRunId
+  AND group_no = @groupNo;";
+
+            await using (var updateCmd = new MySqlCommand(updateGroupSql, connection))
+            {
+                updateCmd.Parameters.AddWithValue("@trayRunId", trayRunId);
+                updateCmd.Parameters.AddWithValue("@groupNo", groupNo);
+                await updateCmd.ExecuteNonQueryAsync();
+            }
         }
 
         public async Task MarkUvRunningAsync(long trayRunId, int groupNo)
@@ -264,58 +388,96 @@ WHERE tray_run_id = @trayRunId
             cmd.Parameters.AddWithValue("@trayRunId", trayRunId);
             cmd.Parameters.AddWithValue("@groupNo", groupNo);
             await cmd.ExecuteNonQueryAsync();
+
+            await InsertEventAsync(trayRunId, null, groupNo, "UV_START", "M922", "ON", $"그룹 {groupNo} UV 시작");
         }
 
-        public async Task MarkStackGroupCompletedAsync(long trayRunId, int groupNo)
+        public async Task MarkStackGroupCompletedAsync(long trayRunId, int groupNo, int outRowNo, int outColNo)
         {
             await using var connection = await _databaseService.CreateOpenConnectionAsync();
-
-            int startSlotNo = ((groupNo - 1) * 5) + 1;
-            int endSlotNo = groupNo * 5;
 
             const string updateGroupSql = @"
 UPDATE stack_group
 SET status = 'COMPLETE',
     uv_completed_at = NOW(),
     completed_at = NOW(),
+    out_row_no = @outRowNo,
+    out_col_no = @outColNo,
     updated_at = NOW()
 WHERE tray_run_id = @trayRunId
   AND group_no = @groupNo;";
 
-            await using var groupCmd = new MySqlCommand(updateGroupSql, connection);
-            groupCmd.Parameters.AddWithValue("@trayRunId", trayRunId);
-            groupCmd.Parameters.AddWithValue("@groupNo", groupNo);
-            await groupCmd.ExecuteNonQueryAsync();
+            await using (var groupCmd = new MySqlCommand(updateGroupSql, connection))
+            {
+                groupCmd.Parameters.AddWithValue("@trayRunId", trayRunId);
+                groupCmd.Parameters.AddWithValue("@groupNo", groupNo);
+                groupCmd.Parameters.AddWithValue("@outRowNo", outRowNo);
+                groupCmd.Parameters.AddWithValue("@outColNo", outColNo);
+                await groupCmd.ExecuteNonQueryAsync();
+            }
 
             const string updateSlotSql = @"
-UPDATE tray_slot
-SET stacked_at = NOW(),
-    updated_at = NOW()
-WHERE tray_run_id = @trayRunId
-  AND slot_no BETWEEN @startSlotNo AND @endSlotNo;";
+UPDATE tray_slot ts
+JOIN stack_group_item sgi
+  ON sgi.tray_run_id = ts.tray_run_id
+ AND sgi.slot_no = ts.slot_no
+SET ts.stacked_at = NOW(),
+    ts.updated_at = NOW()
+WHERE ts.tray_run_id = @trayRunId
+  AND sgi.group_no = @groupNo;";
 
-            await using var slotCmd = new MySqlCommand(updateSlotSql, connection);
-            slotCmd.Parameters.AddWithValue("@trayRunId", trayRunId);
-            slotCmd.Parameters.AddWithValue("@startSlotNo", startSlotNo);
-            slotCmd.Parameters.AddWithValue("@endSlotNo", endSlotNo);
-            await slotCmd.ExecuteNonQueryAsync();
+            await using (var slotCmd = new MySqlCommand(updateSlotSql, connection))
+            {
+                slotCmd.Parameters.AddWithValue("@trayRunId", trayRunId);
+                slotCmd.Parameters.AddWithValue("@groupNo", groupNo);
+                await slotCmd.ExecuteNonQueryAsync();
+            }
 
             const string updateRunSql = @"
 UPDATE tray_run
 SET completed_groups = (
-    SELECT COUNT(*)
-    FROM stack_group
-    WHERE tray_run_id = @trayRunId
-      AND status = 'COMPLETE'
-),
-updated_at = NOW()
+        SELECT COUNT(*)
+        FROM stack_group
+        WHERE tray_run_id = @trayRunId
+          AND status = 'COMPLETE'
+    ),
+    updated_at = NOW()
 WHERE id = @trayRunId;";
 
-            await using var runCmd = new MySqlCommand(updateRunSql, connection);
-            runCmd.Parameters.AddWithValue("@trayRunId", trayRunId);
-            await runCmd.ExecuteNonQueryAsync();
+            await using (var runCmd = new MySqlCommand(updateRunSql, connection))
+            {
+                runCmd.Parameters.AddWithValue("@trayRunId", trayRunId);
+                await runCmd.ExecuteNonQueryAsync();
+            }
 
-            await InsertEventAsync(trayRunId, null, groupNo, "STACK_GROUP_COMPLETE", "M937", "ON", $"그룹 {groupNo} 적층 완료");
+            string membersText = await GetStackGroupMemberTextAsync(trayRunId, groupNo);
+
+            await InsertEventAsync(
+                trayRunId,
+                null,
+                groupNo,
+                "STACK_GROUP_COMPLETE",
+                "M937",
+                "ON",
+                $"그룹 {groupNo} 적층 완료 / {outRowNo}행 {outColNo}열 / {membersText}");
+        }
+
+        public async Task<string> GetStackGroupMemberTextAsync(long trayRunId, int groupNo)
+        {
+            await using var connection = await _databaseService.CreateOpenConnectionAsync();
+
+            const string sql = @"
+SELECT GROUP_CONCAT(CONCAT('LOT ', slot_no) ORDER BY stack_order SEPARATOR ', ')
+FROM stack_group_item
+WHERE tray_run_id = @trayRunId
+  AND group_no = @groupNo;";
+
+            await using var cmd = new MySqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@trayRunId", trayRunId);
+            cmd.Parameters.AddWithValue("@groupNo", groupNo);
+
+            var result = await cmd.ExecuteScalarAsync();
+            return result?.ToString() ?? "";
         }
 
         public async Task<bool> CompleteTrayIfFinishedAsync(long trayRunId)
@@ -336,9 +498,7 @@ WHERE tray_run_id = @trayRunId
             }
 
             if (completeCount < 10)
-            {
                 return false;
-            }
 
             const string sql = @"
 UPDATE tray_run
@@ -373,6 +533,8 @@ WHERE status = 'OPEN';";
 
                 await using var closeCmd = new MySqlCommand(closeSql, connection);
                 await closeCmd.ExecuteNonQueryAsync();
+
+                await InsertEventAsync(trayRunId, null, null, "ALARM_CLEAR", "D0", "0", "알람 해제");
                 return;
             }
 
@@ -387,9 +549,7 @@ WHERE status = 'OPEN'
                 existsCmd.Parameters.AddWithValue("@errorCode", errorCode);
                 int existsCount = Convert.ToInt32(await existsCmd.ExecuteScalarAsync());
                 if (existsCount > 0)
-                {
                     return;
-                }
             }
 
             const string insertSql = @"
@@ -410,7 +570,8 @@ VALUES (@trayRunId, @errorCode, @errorName, NOW(), 'OPEN');";
             await using var connection = await _databaseService.CreateOpenConnectionAsync();
 
             const string sql = @"
-INSERT INTO process_event (
+INSERT INTO process_event
+(
     tray_run_id,
     slot_no,
     group_no,
@@ -420,7 +581,8 @@ INSERT INTO process_event (
     message,
     event_time
 )
-VALUES (
+VALUES
+(
     @trayRunId,
     @slotNo,
     @groupNo,
@@ -448,7 +610,7 @@ VALUES (
 
             const string sql = @"
 SELECT
-    (SELECT COUNT(*) FROM stack_group WHERE status = 'COMPLETE') AS production_count,
+    (SELECT IFNULL(COUNT(*) * 5, 0) FROM stack_group WHERE status = 'COMPLETE') AS production_count,
     0 AS pass_rate,
     0 AS defect_rate,
     (SELECT COUNT(*) FROM tray_run WHERE status = 'COMPLETE') AS completed_tray_count;";
@@ -475,7 +637,7 @@ SELECT
             const string sql = @"
 SELECT
     (SELECT COUNT(*) FROM stack_group) AS total_lot_count,
-    (SELECT COUNT(*) FROM stack_group WHERE status = 'COMPLETE') AS total_produced_unit,
+    (SELECT IFNULL(COUNT(*) * 5, 0) FROM stack_group WHERE status = 'COMPLETE') AS total_produced_unit,
     (
         SELECT IFNULL(AVG(TIMESTAMPDIFF(MINUTE, started_at, completed_at)), 0)
         FROM tray_run
@@ -505,7 +667,7 @@ SELECT
             const string sql = @"
 SELECT event_time, message
 FROM process_event
-ORDER BY id DESC
+ORDER BY event_time DESC, id DESC
 LIMIT @count;";
 
             await using var cmd = new MySqlCommand(sql, connection);
@@ -531,8 +693,20 @@ LIMIT @count;";
             await using var connection = await _databaseService.CreateOpenConnectionAsync();
 
             const string sql = @"
-SELECT slot_no, row_no, col_no, status,
-       TIMESTAMPDIFF(MINUTE, COALESCE(loading_at, created_at), NOW()) AS elapsed_min
+SELECT
+    slot_no,
+    row_no,
+    col_no,
+    status,
+    glass_lot_no,
+    TIMESTAMPDIFF(
+        SECOND,
+        COALESCE(loading_at, created_at),
+        CASE
+            WHEN status = 'COMPLETE' THEN COALESCE(nano_done_at, NOW())
+            ELSE NOW()
+        END
+    ) AS elapsed_sec
 FROM tray_slot
 WHERE tray_run_id = @trayRunId
 ORDER BY row_no ASC, col_no ASC;";
@@ -548,14 +722,20 @@ ORDER BY row_no ASC, col_no ASC;";
                 string status = reader["status"]?.ToString() ?? SlotStatus.Waiting;
                 (Brush brush, string statusText) = GetSlotBrushAndText(status);
 
+                int rowNo = Convert.ToInt32(reader["row_no"]);
+                int colNo = Convert.ToInt32(reader["col_no"]);
+                int slotNo = Convert.ToInt32(reader["slot_no"]);
+                int elapsedSec = Convert.ToInt32(reader["elapsed_sec"]);
+
                 items.Add(new InputSlotState
                 {
-                    SlotNo = Convert.ToInt32(reader["slot_no"]),
-                    RowNo = Convert.ToInt32(reader["row_no"]),
-                    ColNo = Convert.ToInt32(reader["col_no"]),
-                    LotText = $"Lot {Convert.ToInt32(reader["slot_no"])}",
+                    SlotNo = slotNo,
+                    RowNo = rowNo,
+                    ColNo = colNo,
+                    StatusCode = status,
+                    LotText = $"{rowNo}행 {colNo}열",
                     StatusText = statusText,
-                    TimeText = $"TIME: {Convert.ToInt32(reader["elapsed_min"])}m",
+                    TimeText = $"{elapsedSec}s",
                     StatusBrush = brush
                 });
             }
@@ -568,11 +748,31 @@ ORDER BY row_no ASC, col_no ASC;";
             await using var connection = await _databaseService.CreateOpenConnectionAsync();
 
             const string sql = @"
-SELECT group_no, start_slot_no, end_slot_no, status,
-       TIMESTAMPDIFF(MINUTE, COALESCE(stacking_started_at, created_at), NOW()) AS elapsed_min
-FROM stack_group
-WHERE tray_run_id = @trayRunId
-ORDER BY group_no ASC;";
+SELECT
+    sg.group_no,
+    sg.start_slot_no,
+    sg.end_slot_no,
+    sg.status,
+    sg.out_row_no,
+    sg.out_col_no,
+    sg.completed_at,
+    (
+        SELECT GROUP_CONCAT(CONCAT('LOT ', sgi.slot_no) ORDER BY sgi.stack_order SEPARATOR ', ')
+        FROM stack_group_item sgi
+        WHERE sgi.tray_run_id = sg.tray_run_id
+          AND sgi.group_no = sg.group_no
+    ) AS member_lots,
+    TIMESTAMPDIFF(
+        SECOND,
+        COALESCE(sg.stacking_started_at, sg.created_at),
+        CASE
+            WHEN sg.status = 'COMPLETE' THEN COALESCE(sg.completed_at, NOW())
+            ELSE NOW()
+        END
+    ) AS elapsed_sec
+FROM stack_group sg
+WHERE sg.tray_run_id = @trayRunId
+ORDER BY sg.group_no ASC;";
 
             await using var cmd = new MySqlCommand(sql, connection);
             cmd.Parameters.AddWithValue("@trayRunId", trayRunId);
@@ -587,20 +787,37 @@ ORDER BY group_no ASC;";
                 int endSlotNo = Convert.ToInt32(reader["end_slot_no"]);
                 string status = reader["status"]?.ToString() ?? SlotStatus.Waiting;
 
-                (Brush brush, string statusText, string modeText) = GetGroupBrushAndText(status);
+                int rowNo = reader["out_row_no"] == DBNull.Value ? 0 : Convert.ToInt32(reader["out_row_no"]);
+                int colNo = reader["out_col_no"] == DBNull.Value ? 0 : Convert.ToInt32(reader["out_col_no"]);
+
+                if (rowNo <= 0 || colNo <= 0)
+                {
+                    PlcAddressMapper.GetDefaultStackOutPosition(groupNo, out rowNo, out colNo);
+                }
+
+                int elapsedSec = Convert.ToInt32(reader["elapsed_sec"]);
+                DateTime? completedAt = reader["completed_at"] == DBNull.Value
+                    ? null
+                    : reader.GetDateTime("completed_at");
+
+                string memberLots = reader["member_lots"]?.ToString() ?? "";
+                (Brush brush, string statusText) = GetGroupBrushAndText(status);
 
                 items.Add(new StackGroupState
                 {
                     GroupNo = groupNo,
                     StartSlotNo = startSlotNo,
                     EndSlotNo = endSlotNo,
-                    LotText = $"[ Lot {groupNo} ]",
-                    RangeText = $"LOT A{startSlotNo}~{endSlotNo}",
+                    RowNo = rowNo,
+                    ColNo = colNo,
+                    StatusCode = status,
+                    LotText = $"{rowNo}행 {colNo}열",
+                    RangeText = status == SlotStatus.Complete ? memberLots : "",
                     StatusText = statusText,
-                    ModeText = modeText,
-                    TimeText = status == SlotStatus.Waiting
-                        ? "작업 없음"
-                        : $"총 {Convert.ToInt32(reader["elapsed_min"])}분",
+                    ModeText = $"G{groupNo:00}",
+                    TimeText = completedAt.HasValue
+                        ? completedAt.Value.ToString("HH:mm:ss")
+                        : $"{elapsedSec}s",
                     StatusBrush = brush
                 });
             }
@@ -612,29 +829,19 @@ ORDER BY group_no ASC;";
         {
             return status switch
             {
-                SlotStatus.Running => (CreateFrozenBrush("#FF3B30"), "STATUS: RUN"),
-                SlotStatus.GlassLoaded => (CreateFrozenBrush("#F4C542"), "STATUS: LOAD"),
-                SlotStatus.Complete => (CreateFrozenBrush("#D7F04A"), "STATUS: COMPLETE"),
-                _ => (CreateFrozenBrush("#D9D9D9"), "STATUS: WAITING")
+                SlotStatus.Loading => (CreateFrozenBrush("#F4C542"), "LOADING"),
+                SlotStatus.Complete => (CreateFrozenBrush("#D7F04A"), "COMPLETE"),
+                _ => (CreateFrozenBrush("#D9D9D9"), "WAITING")
             };
         }
 
-        private static (Brush brush, string statusText, string modeText) GetGroupBrushAndText(string status)
+        private static (Brush brush, string statusText) GetGroupBrushAndText(string status)
         {
             return status switch
             {
-                SlotStatus.Running => (
-                    CreateFrozenBrush("#FF3B30"),
-                    "합성 중",
-                    "RUN"),
-                SlotStatus.Complete => (
-                    CreateFrozenBrush("#D7F04A"),
-                    "합성 완료",
-                    "COMPLETE"),
-                _ => (
-                    CreateFrozenBrush("#D9D9D9"),
-                    "LOT 대기중",
-                    "IDLE")
+                SlotStatus.Loading => (CreateFrozenBrush("#F4C542"), "LOADING"),
+                SlotStatus.Complete => (CreateFrozenBrush("#D7F04A"), "COMPLETE"),
+                _ => (CreateFrozenBrush("#D9D9D9"), "WAITING")
             };
         }
     }
