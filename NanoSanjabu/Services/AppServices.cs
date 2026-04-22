@@ -14,7 +14,6 @@ namespace NanoSanjabu.Services
             DatabaseService = new DatabaseService();
             MesRepository = new MesRepository(DatabaseService);
             MesRuntimeService = new MesRuntimeService(MesRepository);
-
             return Task.CompletedTask;
         }
 

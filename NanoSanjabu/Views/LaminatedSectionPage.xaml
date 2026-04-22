@@ -24,7 +24,7 @@
                                    Style="{StaticResource LamKpiBigNumber}"
                                    TextAlignment="Center"
                                    HorizontalAlignment="Center"/>
-                        <TextBlock Text="총 수량"
+                        <TextBlock Text="총 칸 수"
                                    Style="{StaticResource LamKpiLabel}"
                                    TextAlignment="Center"
                                    HorizontalAlignment="Center"
@@ -54,7 +54,7 @@
                                    Style="{StaticResource LamKpiBigNumber}"
                                    TextAlignment="Center"
                                    HorizontalAlignment="Center"/>
-                        <TextBlock Text="완료"
+                        <TextBlock Text="안착 완료"
                                    Style="{StaticResource LamKpiLabel}"
                                    TextAlignment="Center"
                                    HorizontalAlignment="Center"
@@ -82,7 +82,7 @@
                     BorderBrush="#21262D"
                     BorderThickness="1">
                 <StackPanel>
-                    <TextBlock Text="5개 합성 트레이"
+                    <TextBlock Text="적층완료 보드"
                                Foreground="#E6EDF3"
                                FontSize="13"
                                FontFamily="Segoe UI, Malgun Gothic"
@@ -101,11 +101,16 @@
                                         Background="{Binding StatusBrush}"
                                         Margin="10">
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding LotText}" Style="{StaticResource LamTrayText}" FontWeight="SemiBold"/>
-                                        <TextBlock Text="{Binding RangeText}" Style="{StaticResource LamTrayText}"/>
-                                        <TextBlock Text="{Binding StatusText}" Style="{StaticResource LamTrayText}"/>
-                                        <TextBlock Text="{Binding ModeText}" Style="{StaticResource LamTrayText}"/>
-                                        <TextBlock Text="{Binding TimeText}" Style="{StaticResource LamTrayText}"/>
+                                        <TextBlock Text="{Binding LotText}"
+                                                   Style="{StaticResource LamTrayText}"
+                                                   FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding MemberText}"
+                                                   Style="{StaticResource LamTrayText}"
+                                                   TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding StatusText}"
+                                                   Style="{StaticResource LamTrayText}"/>
+                                        <TextBlock Text="{Binding TimeText}"
+                                                   Style="{StaticResource LamTrayText}"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

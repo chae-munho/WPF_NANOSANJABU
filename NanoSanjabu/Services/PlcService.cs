@@ -87,6 +87,9 @@ namespace NanoSanjabu.Services
             {
                 M200_AutoRun = ReadBit("M200"),
                 M201_AutoStop = ReadBit("M201"),
+                M202_LoadingMode = ReadBit("M202"),
+                M203_UnloadingMode = ReadBit("M203"),
+
                 D0_Error = ReadWord("D0"),
 
                 M122 = ReadBit("M122"),
@@ -104,21 +107,22 @@ namespace NanoSanjabu.Services
                 M863_NanoDone = ReadBit("M863"),
                 D10_WorkCount = ReadWord("D10"),
 
-                X07_UpperTray = ReadBit("X7"),
-                X08_LowerTray = ReadBit("X8"),
+                X07_UpperTraySensor = ReadBit("X7"),
+                X08_LowerTraySensor = ReadBit("X8"),
+
                 L1_DryStartUpper = ReadBit("L1"),
                 L2_DryStartLower = ReadBit("L2"),
                 L3_DryEndUpper = ReadBit("L3"),
                 L4_DryEndLower = ReadBit("L4"),
 
-                D20_StackInput = ReadWord("D20"),
+                D20_StackInputCount = ReadWord("D20"),
                 D22_DottingCount = ReadWord("D22"),
                 D26_StackOutCount = ReadWord("D26"),
 
-                M906_StackDone = ReadBit("M906"),
+                M906_StackInputDone = ReadBit("M906"),
                 M991_DotDone = ReadBit("M991"),
                 M922_UVRun = ReadBit("M922"),
-                M937_StackOut = ReadBit("M937")
+                M937_StackOutDone = ReadBit("M937")
             };
 
             for (int i = 0; i < 10; i++)

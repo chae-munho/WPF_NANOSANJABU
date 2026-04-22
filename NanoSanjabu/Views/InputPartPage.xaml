@@ -12,7 +12,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- 상단 KPI 영역: 기존 Grid 방식 유지 -->
         <Grid Grid.Row="0"
               HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
@@ -70,7 +69,7 @@
                     <TextBlock x:Name="TxtCompleteCount"
                                Text="0"
                                Style="{StaticResource KpiBigNumber}"/>
-                    <TextBlock Text="완료"
+                    <TextBlock Text="완료/배출"
                                Style="{StaticResource KpiLabel}"/>
                 </StackPanel>
             </Border>
@@ -87,7 +86,6 @@
             </Border>
         </Grid>
 
-        <!-- 타이틀 -->
         <TextBlock Grid.Row="2"
                    x:Name="TxtTrayTitle"
                    Text="트레이 - 작업 중"
@@ -97,7 +95,6 @@
                    FontFamily="Segoe UI, Malgun Gothic"
                    Margin="2,0,0,0"/>
 
-        <!-- 슬롯 영역 -->
         <Border Grid.Row="4"
                 VerticalAlignment="Top"
                 Background="#2A281F"
@@ -139,6 +136,12 @@
                                            TextAlignment="Center"
                                            Margin="0,2,0,0"/>
                                 <TextBlock Text="{Binding TimeText}"
+                                           FontSize="10"
+                                           Foreground="#222"
+                                           FontFamily="Segoe UI"
+                                           HorizontalAlignment="Center"
+                                           TextAlignment="Center"/>
+                                <TextBlock Text="{Binding CompletedAtText}"
                                            FontSize="10"
                                            Foreground="#222"
                                            FontFamily="Segoe UI"

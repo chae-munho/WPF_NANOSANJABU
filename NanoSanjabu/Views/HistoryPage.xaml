@@ -29,8 +29,15 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="총 LOT 수" Style="{StaticResource LabelText}" FontSize="12"/>
-                    <TextBlock x:Name="TxtTotalLotCount" Grid.Row="1" Text="0" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
+                    <TextBlock Text="총 LOT 수"
+                               Style="{StaticResource LabelText}"
+                               FontSize="12"/>
+                    <TextBlock x:Name="TxtTotalLotCount"
+                               Grid.Row="1"
+                               Text="0"
+                               Style="{StaticResource ValueText}"
+                               FontSize="34"
+                               Margin="0,10,0,0"/>
                 </Grid>
             </Border>
 
@@ -40,8 +47,15 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="총 생산 UNIT" Style="{StaticResource LabelText}" FontSize="12"/>
-                    <TextBlock x:Name="TxtTotalProducedUnit" Grid.Row="1" Text="0" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
+                    <TextBlock Text="총 생산 UNIT"
+                               Style="{StaticResource LabelText}"
+                               FontSize="12"/>
+                    <TextBlock x:Name="TxtTotalProducedUnit"
+                               Grid.Row="1"
+                               Text="0"
+                               Style="{StaticResource ValueText}"
+                               FontSize="34"
+                               Margin="0,10,0,0"/>
                 </Grid>
             </Border>
 
@@ -51,8 +65,15 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="평균 공정 소요 시간" Style="{StaticResource LabelText}" FontSize="12"/>
-                    <TextBlock x:Name="TxtAvgProcessMinutes" Grid.Row="1" Text="0" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
+                    <TextBlock Text="평균 공정 소요 시간"
+                               Style="{StaticResource LabelText}"
+                               FontSize="12"/>
+                    <TextBlock x:Name="TxtAvgProcessMinutes"
+                               Grid.Row="1"
+                               Text="0"
+                               Style="{StaticResource ValueText}"
+                               FontSize="34"
+                               Margin="0,10,0,0"/>
                 </Grid>
             </Border>
 
@@ -62,8 +83,15 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="재작업 LOT" Style="{StaticResource LabelText}" FontSize="12"/>
-                    <TextBlock x:Name="TxtReworkLotCount" Grid.Row="1" Text="0" Style="{StaticResource ValueText}" FontSize="34" Margin="0,10,0,0"/>
+                    <TextBlock Text="재작업 LOT"
+                               Style="{StaticResource LabelText}"
+                               FontSize="12"/>
+                    <TextBlock x:Name="TxtReworkLotCount"
+                               Grid.Row="1"
+                               Text="0"
+                               Style="{StaticResource ValueText}"
+                               FontSize="34"
+                               Margin="0,10,0,0"/>
                 </Grid>
             </Border>
         </UniformGrid>

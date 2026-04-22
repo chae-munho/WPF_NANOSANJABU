@@ -20,7 +20,7 @@ namespace NanoSanjabu.Services
         public MesSnapshot CurrentSnapshot { get; private set; } = new MesSnapshot
         {
             InputSlots = MesUiFactory.CreateDefaultInputSlots(),
-            StackGroups = MesUiFactory.CreateDefaultStackGroups(),
+            StackBoardCells = MesUiFactory.CreateDefaultStackBoardCells(),
             Reports = new()
         };
 
@@ -43,7 +43,7 @@ namespace NanoSanjabu.Services
         {
             try
             {
-                CurrentTrayRunId = await _repository.GetOrCreateActiveTrayRunAsync();
+                CurrentTrayRunId = await _repository.GetOrCreateCurrentTrayRunAsync();
                 await RefreshSnapshotAsync();
             }
             catch
@@ -53,9 +53,10 @@ namespace NanoSanjabu.Services
                     Dashboard = new DashboardSummary(),
                     History = new HistorySummary(),
                     InputSlots = MesUiFactory.CreateDefaultInputSlots(),
-                    StackGroups = MesUiFactory.CreateDefaultStackGroups(),
+                    StackBoardCells = MesUiFactory.CreateDefaultStackBoardCells(),
                     Reports = new(),
-                    CurrentTrayLotNo = "대기 중"
+                    CurrentTrayRunNo = "대기 중",
+                    CurrentTrayTypeText = ""
                 };
 
                 SnapshotUpdated?.Invoke(this, EventArgs.Empty);
@@ -75,7 +76,7 @@ namespace NanoSanjabu.Services
             }
 
             if (CurrentTrayRunId == 0)
-                CurrentTrayRunId = await _repository.GetOrCreateActiveTrayRunAsync();
+                CurrentTrayRunId = await _repository.GetOrCreateCurrentTrayRunAsync();
 
             _timer.Start();
         }
@@ -109,82 +110,96 @@ namespace NanoSanjabu.Services
 
         private async Task ProcessPlcAsync(PlcData current)
         {
+            if (CurrentTrayRunId == 0)
+                CurrentTrayRunId = await _repository.GetOrCreateCurrentTrayRunAsync();
+
+            // D60, D61 -> 투입부 현재 슬롯
             short loaderX = current.PositionIndex[0]; // D60
             short loaderY = current.PositionIndex[1]; // D61
 
-            // 1) 투입부 현재 작업 위치 -> LOADING
             if (PlcAddressMapper.TryGetInputSlot(loaderX, loaderY, out _, out _, out int currentSlotNo))
             {
                 await _repository.MarkSlotLoadingAsync(CurrentTrayRunId, currentSlotNo);
             }
 
-            // 2) Glass 안착 완료
+            // M858 상승엣지 -> Glass 안착 완료
             if (IsRisingEdge(_previousData?.M858_GlassLoaded, current.M858_GlassLoaded) &&
                 PlcAddressMapper.TryGetInputSlot(loaderX, loaderY, out _, out _, out int glassSlotNo))
             {
                 await _repository.MarkGlassLoadedAsync(CurrentTrayRunId, glassSlotNo);
             }
 
-            // 3) Nano 완료 -> COMPLETE
+            // M863 상승엣지 -> Nano 완료
             if (IsRisingEdge(_previousData?.M863_NanoDone, current.M863_NanoDone) &&
                 PlcAddressMapper.TryGetInputSlot(loaderX, loaderY, out _, out _, out int nanoSlotNo))
             {
                 await _repository.MarkNanoDoneAsync(CurrentTrayRunId, nanoSlotNo);
             }
 
-            // 4) Dry Zone
+            // 건조 시작 / 완료
             if (IsRisingEdge(_previousData?.L1_DryStartUpper, current.L1_DryStartUpper))
             {
-                await _repository.MarkDryStartedAsync(CurrentTrayRunId, "UPPER_DRY");
+                await _repository.MarkDryStartedAsync(CurrentTrayRunId);
             }
 
             if (IsRisingEdge(_previousData?.L2_DryStartLower, current.L2_DryStartLower))
             {
-                await _repository.MarkDryStartedAsync(CurrentTrayRunId, "LOWER_DRY");
+                await _repository.MarkDryStartedAsync(CurrentTrayRunId);
             }
 
             if (IsRisingEdge(_previousData?.L3_DryEndUpper, current.L3_DryEndUpper))
             {
-                await _repository.MarkDryCompletedAsync(CurrentTrayRunId, "UPPER_DRY");
+                await _repository.MarkDryCompletedAsync(CurrentTrayRunId);
             }
 
             if (IsRisingEdge(_previousData?.L4_DryEndLower, current.L4_DryEndLower))
             {
-                await _repository.MarkDryCompletedAsync(CurrentTrayRunId, "LOWER_DRY");
+                await _repository.MarkDryCompletedAsync(CurrentTrayRunId);
             }
 
-            // 5) 적층 진행 그룹
-            int currentGroupNo = PlcAddressMapper.GetCurrentStackGroup(current.D26_StackOutCount, current.D20_StackInput);
-
-            if (current.D20_StackInput > 0)
-            {
-                await _repository.MarkStackGroupLoadingAsync(CurrentTrayRunId, currentGroupNo);
-            }
-
-            // 6) 적층 source slot 수집
-            // D65 = Transfer X(열 1~10), D66 = Unloader X(행 1~5), D67 = Unloader Y(Tray 작업 위치=1)
+            // 적층 source pick
+            // D65 = Transfer X(열)
+            // D66 = Unloader X(행)
             short transferX = current.PositionIndex[5]; // D65
             short unloaderX = current.PositionIndex[6]; // D66
-            short unloaderY = current.PositionIndex[7]; // D67
 
-            if (current.D20_StackInput >= 1 && current.D20_StackInput <= 5 &&
-                PlcAddressMapper.TryGetStackPickSlot(transferX, unloaderX, unloaderY, out _, out _, out int pickedSlotNo))
+            // 현재 그룹 번호 계산
+            int currentGroupNo = PlcAddressMapper.GetCurrentGroupNo(
+                current.D26_StackOutCount,
+                current.D20_StackInputCount);
+
+            // M906 상승엣지 시 1개 pick 완료로 기록
+            if (IsRisingEdge(_previousData?.M906_StackInputDone, current.M906_StackInputDone) &&
+                current.D20_StackInputCount >= 1 &&
+                current.D20_StackInputCount <= 5 &&
+                PlcAddressMapper.TryGetStackPickSlot(transferX, unloaderX, out _, out _, out int pickedSlotNo))
             {
-                await _repository.UpsertStackGroupItemAsync(
+                await _repository.RegisterStackPickAsync(
                     CurrentTrayRunId,
                     currentGroupNo,
                     pickedSlotNo,
-                    current.D20_StackInput);
+                    current.D20_StackInputCount);
             }
 
-            // 7) UV 시작
+            // M991 상승엣지 -> Dotting 로그
+            if (IsRisingEdge(_previousData?.M991_DotDone, current.M991_DotDone))
+            {
+                await _repository.InsertDottingEventAsync(CurrentTrayRunId, currentGroupNo, current.D22_DottingCount);
+            }
+
+            // M922 상승/하강 -> UV 시작/종료 로그
             if (IsRisingEdge(_previousData?.M922_UVRun, current.M922_UVRun))
             {
-                await _repository.MarkUvRunningAsync(CurrentTrayRunId, currentGroupNo);
+                await _repository.InsertUvStartEventAsync(CurrentTrayRunId, currentGroupNo);
             }
 
-            // 8) 적층 완료
-            if (IsRisingEdge(_previousData?.M937_StackOut, current.M937_StackOut))
+            if (IsFallingEdge(_previousData?.M922_UVRun, current.M922_UVRun))
+            {
+                await _repository.InsertUvFinishEventAsync(CurrentTrayRunId, currentGroupNo);
+            }
+
+            // M937 상승엣지 -> 적층완료보드 안착 완료
+            if (IsRisingEdge(_previousData?.M937_StackOutDone, current.M937_StackOutDone))
             {
                 int completedGroupNo = current.D26_StackOutCount;
                 if (completedGroupNo < 1)
@@ -192,25 +207,31 @@ namespace NanoSanjabu.Services
                     completedGroupNo = currentGroupNo;
                 }
 
-                // D66=Unloader X, D67=Unloader Y
-                int outRowNo;
-                int outColNo;
+                short boardX = current.PositionIndex[6]; // D66 = Unloader X 11~15
+                short boardY = current.PositionIndex[7]; // D67 = Unloader Y 11~12
 
-                if (!PlcAddressMapper.TryGetStackOutPosition(unloaderX, unloaderY, out outRowNo, out outColNo))
+                int boardRowNo;
+                int boardColNo;
+
+                if (!PlcAddressMapper.TryGetStackBoardPosition(boardX, boardY, out boardRowNo, out boardColNo))
                 {
-                    PlcAddressMapper.GetDefaultStackOutPosition(completedGroupNo, out outRowNo, out outColNo);
+                    PlcAddressMapper.GetDefaultStackBoardPosition(completedGroupNo, out boardRowNo, out boardColNo);
                 }
 
-                await _repository.MarkStackGroupCompletedAsync(CurrentTrayRunId, completedGroupNo, outRowNo, outColNo);
+                await _repository.MarkStackGroupLaminatedAsync(
+                    CurrentTrayRunId,
+                    completedGroupNo,
+                    boardRowNo,
+                    boardColNo);
 
                 bool trayCompleted = await _repository.CompleteTrayIfFinishedAsync(CurrentTrayRunId);
                 if (trayCompleted)
                 {
-                    CurrentTrayRunId = await _repository.GetOrCreateActiveTrayRunAsync();
+                    CurrentTrayRunId = await _repository.GetOrCreateCurrentTrayRunAsync();
                 }
             }
 
-            // 9) 알람
+            // 알람
             bool d0Changed = _previousData == null || _previousData.D0_Error != current.D0_Error;
             if (d0Changed)
             {
@@ -224,26 +245,26 @@ namespace NanoSanjabu.Services
             {
                 if (CurrentTrayRunId == 0)
                 {
-                    CurrentTrayRunId = await _repository.GetOrCreateActiveTrayRunAsync();
+                    CurrentTrayRunId = await _repository.GetOrCreateCurrentTrayRunAsync();
                 }
 
+                var trayInfo = await _repository.GetTrayRunInfoAsync(CurrentTrayRunId);
+
                 var inputSlots = await _repository.GetInputSlotsAsync(CurrentTrayRunId);
-                var stackGroups = await _repository.GetStackGroupsAsync(CurrentTrayRunId);
+                var boardCells = await _repository.GetStackBoardCellsAsync(CurrentTrayRunId);
 
                 CurrentSnapshot = new MesSnapshot
                 {
                     Dashboard = await _repository.GetDashboardSummaryAsync(),
                     History = await _repository.GetHistorySummaryAsync(),
                     InputSlots = inputSlots.Count > 0 ? inputSlots : MesUiFactory.CreateDefaultInputSlots(),
-                    StackGroups = stackGroups.Count > 0 ? stackGroups : MesUiFactory.CreateDefaultStackGroups(),
+                    StackBoardCells = boardCells.Count > 0 ? boardCells : MesUiFactory.CreateDefaultStackBoardCells(),
                     Reports = await _repository.GetRecentReportsAsync(20),
-                    CurrentTrayLotNo = await _repository.GetTrayLotNoAsync(CurrentTrayRunId)
+                    CurrentTrayRunNo = string.IsNullOrWhiteSpace(trayInfo.TrayRunNo) ? "대기 중" : trayInfo.TrayRunNo,
+                    CurrentTrayTypeText = string.IsNullOrWhiteSpace(trayInfo.TrayType)
+                        ? ""
+                        : PlcAddressMapper.GetTrayTypeText(trayInfo.TrayType)
                 };
-
-                if (string.IsNullOrWhiteSpace(CurrentSnapshot.CurrentTrayLotNo))
-                {
-                    CurrentSnapshot.CurrentTrayLotNo = "대기 중";
-                }
             }
             catch
             {
@@ -252,9 +273,10 @@ namespace NanoSanjabu.Services
                     Dashboard = new DashboardSummary(),
                     History = new HistorySummary(),
                     InputSlots = MesUiFactory.CreateDefaultInputSlots(),
-                    StackGroups = MesUiFactory.CreateDefaultStackGroups(),
+                    StackBoardCells = MesUiFactory.CreateDefaultStackBoardCells(),
                     Reports = new(),
-                    CurrentTrayLotNo = "대기 중"
+                    CurrentTrayRunNo = "대기 중",
+                    CurrentTrayTypeText = ""
                 };
             }
 
@@ -264,6 +286,11 @@ namespace NanoSanjabu.Services
         private static bool IsRisingEdge(bool? previous, bool current)
         {
             return previous.HasValue && previous.Value == false && current;
+        }
+
+        private static bool IsFallingEdge(bool? previous, bool current)
+        {
+            return previous.HasValue && previous.Value && !current;
         }
 
         public void Stop()

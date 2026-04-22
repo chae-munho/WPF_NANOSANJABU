@@ -49,14 +49,25 @@ namespace NanoSanjabu.Views
 
             TrayItems.ItemsSource = items;
 
-            TxtTrayTitle.Text = string.IsNullOrWhiteSpace(snapshot.CurrentTrayLotNo)
-                ? "대기 중"
-                : $"{snapshot.CurrentTrayLotNo} - 작업 중";
+            if (string.IsNullOrWhiteSpace(snapshot.CurrentTrayRunNo))
+            {
+                TxtTrayTitle.Text = "대기 중";
+            }
+            else
+            {
+                string trayTypeText = string.IsNullOrWhiteSpace(snapshot.CurrentTrayTypeText)
+                    ? ""
+                    : $"[{snapshot.CurrentTrayTypeText}] ";
+
+                TxtTrayTitle.Text = $"{trayTypeText}{snapshot.CurrentTrayRunNo}";
+            }
 
             TxtTotalCount.Text = items.Count.ToString();
-            TxtWaitingCount.Text = items.Count(x => x.StatusCode == SlotStatus.Waiting).ToString();
-            TxtRunningCount.Text = items.Count(x => x.StatusCode == SlotStatus.Loading).ToString();
-            TxtCompleteCount.Text = items.Count(x => x.StatusCode == SlotStatus.Complete).ToString();
+            TxtWaitingCount.Text = items.Count(x => x.StatusCode == InputSlotStatus.Waiting).ToString();
+            TxtRunningCount.Text = items.Count(x => x.StatusCode == InputSlotStatus.Loading).ToString();
+            TxtCompleteCount.Text = items.Count(x =>
+                x.StatusCode == InputSlotStatus.Complete ||
+                x.StatusCode == InputSlotStatus.Unloaded).ToString();
         }
     }
 }

@@ -38,7 +38,10 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="생산 수량" FontSize="20" Foreground="#FFF" FontFamily="Segoe UI, Malgun Gothic"/>
+                    <TextBlock Text="생산 수량"
+                               FontSize="20"
+                               Foreground="#FFF"
+                               FontFamily="Segoe UI, Malgun Gothic"/>
                     <TextBlock x:Name="TxtProductionCount"
                                Grid.Row="1"
                                Text="0"
@@ -58,7 +61,10 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="합격률" FontSize="20" Foreground="#FFF" FontFamily="Segoe UI, Malgun Gothic"/>
+                    <TextBlock Text="합격률"
+                               FontSize="20"
+                               Foreground="#FFF"
+                               FontFamily="Segoe UI, Malgun Gothic"/>
                     <TextBlock x:Name="TxtPassRate"
                                Grid.Row="1"
                                Text="0%"
@@ -78,7 +84,10 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="불량" FontSize="20" Foreground="#FFF" FontFamily="Segoe UI, Malgun Gothic"/>
+                    <TextBlock Text="불량"
+                               FontSize="20"
+                               Foreground="#FFF"
+                               FontFamily="Segoe UI, Malgun Gothic"/>
                     <TextBlock x:Name="TxtDefectRate"
                                Grid.Row="1"
                                Text="0%"
@@ -98,7 +107,10 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="완료" FontSize="20" Foreground="#FFF" FontFamily="Segoe UI, Malgun Gothic"/>
+                    <TextBlock Text="완료 수"
+                               FontSize="20"
+                               Foreground="#FFF"
+                               FontFamily="Segoe UI, Malgun Gothic"/>
                     <TextBlock x:Name="TxtCompletedTrayCount"
                                Grid.Row="1"
                                Text="0"
