@@ -8,8 +8,8 @@
         // 현재 미사용
         public double PassRate { get; set; }
 
-        // 현재 미사용
-        public double DefectRate { get; set; }
+        // 현재 열린 알람 수
+        public int ErrorCount { get; set; }
 
         // 완료된 tray_run 수 (상판 1회, 하판 1회 각각 1건)
         public int CompletedTrayCount { get; set; }

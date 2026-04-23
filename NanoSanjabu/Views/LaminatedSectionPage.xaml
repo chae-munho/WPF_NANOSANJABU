@@ -10,10 +10,6 @@
                     <ColumnDefinition Width="259"/>
                     <ColumnDefinition Width="12"/>
                     <ColumnDefinition Width="259"/>
-                    <ColumnDefinition Width="12"/>
-                    <ColumnDefinition Width="259"/>
-                    <ColumnDefinition Width="12"/>
-                    <ColumnDefinition Width="259"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -32,22 +28,7 @@
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="2" Style="{StaticResource LamKpiCard}" Background="#0E2442">
-                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock x:Name="TxtRunningGroupCount"
-                                   Text="0"
-                                   Style="{StaticResource LamKpiBigNumber}"
-                                   TextAlignment="Center"
-                                   HorizontalAlignment="Center"/>
-                        <TextBlock Text="진행 중"
-                                   Style="{StaticResource LamKpiLabel}"
-                                   TextAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,8,0,0"/>
-                    </StackPanel>
-                </Border>
-
-                <Border Grid.Column="4" Style="{StaticResource LamKpiCard}" Background="#2A2412">
+                <Border Grid.Column="2" Style="{StaticResource LamKpiCard}" Background="#2A2412">
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                         <TextBlock x:Name="TxtCompletedGroupCount"
                                    Text="0"
@@ -55,20 +36,6 @@
                                    TextAlignment="Center"
                                    HorizontalAlignment="Center"/>
                         <TextBlock Text="안착 완료"
-                                   Style="{StaticResource LamKpiLabel}"
-                                   TextAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,8,0,0"/>
-                    </StackPanel>
-                </Border>
-
-                <Border Grid.Column="6" Style="{StaticResource LamKpiCard}" Background="#0C2A27">
-                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Text="0"
-                                   Style="{StaticResource LamKpiBigNumber}"
-                                   TextAlignment="Center"
-                                   HorizontalAlignment="Center"/>
-                        <TextBlock Text="에러"
                                    Style="{StaticResource LamKpiLabel}"
                                    TextAlignment="Center"
                                    HorizontalAlignment="Center"

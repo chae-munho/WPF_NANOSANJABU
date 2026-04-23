@@ -43,7 +43,7 @@ namespace NanoSanjabu.Views
             StackGroupItemsControl.ItemsSource = items;
 
             TxtTotalGroupCount.Text = items.Count.ToString();
-            TxtRunningGroupCount.Text = "0";
+            
             TxtCompletedGroupCount.Text = items.Count(x => x.StatusCode == StackBoardStatus.Laminated).ToString();
         }
     }

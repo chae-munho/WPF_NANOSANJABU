@@ -22,8 +22,6 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="12"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
@@ -70,17 +68,6 @@
                                Text="0"
                                Style="{StaticResource KpiBigNumber}"/>
                     <TextBlock Text="완료/배출"
-                               Style="{StaticResource KpiLabel}"/>
-                </StackPanel>
-            </Border>
-
-            <Border Grid.Column="8"
-                    Style="{StaticResource KpiMiniCard}"
-                    Background="#2A151A">
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="0"
-                               Style="{StaticResource KpiBigNumber}"/>
-                    <TextBlock Text="에러"
                                Style="{StaticResource KpiLabel}"/>
                 </StackPanel>
             </Border>

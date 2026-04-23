@@ -35,7 +35,7 @@ namespace NanoSanjabu.Views
 
             TxtProductionCount.Text = snapshot.Dashboard.ProductionCount.ToString();
             TxtPassRate.Text = $"{snapshot.Dashboard.PassRate:0.#}%";
-            TxtDefectRate.Text = $"{snapshot.Dashboard.DefectRate:0.#}%";
+            TxtErrorCount.Text = snapshot.Dashboard.ErrorCount.ToString();
             TxtCompletedTrayCount.Text = snapshot.Dashboard.CompletedTrayCount.ToString();
 
             ReportItemsControl.ItemsSource = snapshot.Reports;

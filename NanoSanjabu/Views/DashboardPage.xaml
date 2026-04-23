@@ -84,13 +84,13 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="불량"
+                    <TextBlock Text="에러 수"
                                FontSize="20"
                                Foreground="#FFF"
                                FontFamily="Segoe UI, Malgun Gothic"/>
-                    <TextBlock x:Name="TxtDefectRate"
+                    <TextBlock x:Name="TxtErrorCount"
                                Grid.Row="1"
-                               Text="0%"
+                               Text="0"
                                FontSize="50"
                                FontWeight="Bold"
                                Foreground="#E6EDF3"

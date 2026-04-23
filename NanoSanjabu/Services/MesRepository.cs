@@ -838,7 +838,7 @@ VALUES
 SELECT
     (SELECT IFNULL(COUNT(*) * 5, 0) FROM stack_group WHERE status = 'LAMINATED') AS production_count,
     0 AS pass_rate,
-    0 AS defect_rate,
+    (SELECT COUNT(*) FROM equipment_alarm WHERE status = 'OPEN') AS error_count,
     (SELECT COUNT(*) FROM tray_run WHERE status = 'COMPLETE') AS completed_tray_count;";
 
             await using var cmd = new MySqlCommand(sql, connection);
@@ -849,7 +849,7 @@ SELECT
             {
                 summary.ProductionCount = Convert.ToInt32(reader["production_count"]);
                 summary.PassRate = Convert.ToDouble(reader["pass_rate"]);
-                summary.DefectRate = Convert.ToDouble(reader["defect_rate"]);
+                summary.ErrorCount = Convert.ToInt32(reader["error_count"]);
                 summary.CompletedTrayCount = Convert.ToInt32(reader["completed_tray_count"]);
             }
 
