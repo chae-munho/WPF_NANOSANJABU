@@ -86,21 +86,34 @@ namespace NanoSanjabu.Services
             if (_isProcessing)
                 return;
 
-            if (_plcService == null || !_plcService.IsConnected)
+            if (_plcService == null)
                 return;
 
             _isProcessing = true;
 
             try
             {
+                if (!_plcService.IsConnected)
+                {
+                    bool reconnected = _plcService.Connect(out int reconnectErrorCode);
+                    if (!reconnected)
+                    {
+                        await SafeAddRuntimeErrorReportAsync(
+                            $"PLC 재연결 실패: ErrorCode={reconnectErrorCode}");
+                        return;
+                    }
+
+                    await SafeAddRuntimeErrorReportAsync("PLC 재연결 성공");
+                }
+
                 PlcData current = _plcService.ReadAll();
                 await ProcessPlcAsync(current);
                 _previousData = current;
                 await RefreshSnapshotAsync();
             }
-            catch
+            catch (Exception ex)
             {
-                _timer.Stop();
+                await SafeAddRuntimeErrorReportAsync($"런타임 처리 오류: {ex.Message}");
             }
             finally
             {
@@ -282,6 +295,32 @@ namespace NanoSanjabu.Services
 
             SnapshotUpdated?.Invoke(this, EventArgs.Empty);
         }
+
+
+        private async Task SafeAddRuntimeErrorReportAsync(string message)
+        {
+            try
+            {
+                await _repository.InsertEventAsync(
+                    CurrentTrayRunId > 0 ? CurrentTrayRunId : null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    "RUNTIME_ERROR",
+                    null,
+                    null,
+                    message);
+
+                await RefreshSnapshotAsync();
+            }
+            catch
+            {
+                // 여기서 또 예외가 나더라도 타이머를 멈추지 않음
+            }
+        }
+
 
         private static bool IsRisingEdge(bool? previous, bool current)
         {
